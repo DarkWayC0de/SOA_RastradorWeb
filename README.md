@@ -1,12 +1,12 @@
-# ${NOMBRE_PROYECTO}
+# Rastreador web
 
-${DESCRIPCION_PROYECTO}
+A partir de las piezas que hemos desarrollado en el aula vamos a terminar de desarrollar el resto de componentes para crear un rastreador web basado en el modelo de actores. Todas las tareas aun no están disponibles. Las iremos añadiendo a este mismo documento según vayammos avanzado en clase.
 
 ## Cómo empezar
 
 Para empezar:
 
- 1. Acepta la [actividad en GitHub Classroom](${CLASSROOM_ID}).
+ 1. Acepta la [actividad en GitHub Classroom](https://classroom.github.com/g/fk-yGn4g).
 
     Obtendrás tu propia copia de este mismo repositorio para comenzar a trabajar. Por ejemplo, si la actividad se
     llama `soa-actividad01` y tu equipo es `grupo01`, tu nuevo repositorio se llamará
@@ -15,7 +15,7 @@ Para empezar:
  1. [Clona](http://git.github.io/git-reference/#clone) el nuevo repositorio en tu ordenador. Esa será tu copia local del
  proyecto y el repositorio original `ull-esit-sistemas-operativos/soa-actividad01-grupo01` será `origin`.
 
- 1. En tu copia local en tu ordenador no trabajes directamene en la rama `master`.
+ 1. En tu copia local en tu ordenador no trabajes directamente en la rama `master`.
  Crea una rama con el prefijo `develop-` seguido por el nombre de tu cuenta en GitHub y haz todos los cambios sobre ella.
  Por ejemplo, si tu cuenta en GitHub es `alu0100123456`, crea la rama de la siguiente manera:
 
@@ -27,10 +27,10 @@ Para empezar:
     Por simplificar, en el resto del documento la llamaremos rama _develop_. 
     Como comentaremos después, la idea es pasar los cambios a _master_ solo cuando tengan algo definitivo.
 
- 1. Añade el repositorio extra `git@github.com:ull-esit-sistemas-operativos/soa-actividad01.git` como `upstream`:
+ 1. Añade el repositorio extra `git@github.com:ull-esit-sistemas-operativos/soa-rastreador-web.git` como `upstream`:
 
     ~~~~.sh
-    $ git remote add upstream git@github.com:ull-esit-sistemas-operativos/soa-actividad01.git
+    $ git remote add upstream git@github.com:ull-esit-sistemas-operativos/soa-rastreador-web.git
     ~~~~
 
     Así se pueden obtener las últimas actualizaciones a la actividad ejecutando:
@@ -41,15 +41,31 @@ Para empezar:
 
 ## Tareas
 
-Trabaja en la rama  _develop_ de tu copia local siguiendo los pasos indicados a continuación:
+Trabaja en la rama  _develop_ de tu copia local siguiendo los pasos indicados a continuación.
 
- 1. ...
+### 1. _Testing_ de `libactors` 
 
- 1. Modifica `README.md` usando [Markdown](https://guides.github.com/features/mastering-markdown/) para:
-    1. Explicar cómo compilar y probar el proyecto, incluyendo requisitos adicionales, si los hubiera.
-    1. Comentar las características implementadas, opcionales y bugs conocidos.
+Cualquier buen desarrollo debe ir acompañado de tests. De hecho existen metodologías como TDD y BDD donde se escriben los test antes de comenzar a programar. Por esto te proponemos que escribas tests para al menos los siguientes casos de uso de la clase `Actor`.
 
-    No te olvides de hacer un _commit_ en _develop_ para preservar los cambios en README.md.
+* Que `sender()` devuelve `nullptr`cuando no se está atendiendo ningún mensaje.
+* Que `sender()` tiene un puntero al remitente del mensaje cuando se está ejecutando el _slot_ que atiende al mensaje.
+* Desde un _slot_ se puede usar `reply()` para responder al remitente del mensaje que se está atendiendo.
+* Hay un _slot_ `Actor::unknownMessage(const QString& message)` al que llegan los mensajes desconocidos y funciona correctamente.
+* El actor muere cuando lo solicita usando `Actor::kill()`.
+* El actor padre es notificado con el mensaje `failed` cuando un hijo falla (por ejemplo, en un _slot_ se genera una excepción que no es manejada dentro del _slot_).
+
+y opcionalmente para verificar los métodos `send()`, `spawn()` y `kill()` de la clase ActorManager.
+
+~Finalmente incluir la información de cobertura (_coverage_) de los tests en el archivo _README.md_ usando GCOV y LCOV.~
+
+### 99. Documentación
+
+ Modifica `README.md` usando [Markdown](https://guides.github.com/features/mastering-markdown/) para:
+ 
+  1. Explicar cómo compilar y probar el proyecto, incluyendo requisitos adicionales, si los hubiera.
+  1. Comentar las características implementadas, opcionales y bugs conocidos.
+
+No te olvides de hacer un _commit_ en _develop_ para preservar los cambios en README.md.
 
 ## Para entregar la actividad
 
