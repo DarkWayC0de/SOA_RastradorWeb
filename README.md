@@ -56,7 +56,8 @@ Cualquier buen desarrollo debe ir acompañado de tests. De hecho existen metodol
 
 y opcionalmente para verificar los métodos `send()`, `spawn()` y `kill()` de la clase ActorManager.
 
-~Finalmente incluir la información de cobertura (_coverage_) de los tests en el archivo _README.md_ usando GCOV y LCOV.~
+Finalmente incluir la información de cobertura (_coverage_) de los tests en el archivo _README.md_.
+Los detalles de cómo hacerlo usando GCOV están en el wiki del repositorio.
 
 ### 99. Documentación
 
