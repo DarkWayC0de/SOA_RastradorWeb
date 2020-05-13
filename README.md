@@ -59,6 +59,29 @@ y opcionalmente para verificar los métodos `send()`, `spawn()` y `kill()` de la
 Finalmente incluir la información de cobertura (_coverage_) de los tests en el archivo README.md.
 Los detalles de cómo hacerlo usando GCOV están en el wiki del repositorio.
 
+### 2. Rastreador web
+
+El rastreador web usando el modelo de actores debe funcionar de la siguiente manera:
+
+ 1. Un actor "cliente" enviará un "crawlRequest(url, depth)" al actor CrawlServer, que se ejecuta de forma permanente.
+ 1. El CrawlServer creará y delegará la petición como "request(url, depth)" a un nuevo actor LinkChecker, a menos que una petición a la 
+ misma URL ya se esté atendiendo.
+ En ese caso el cliente será añadido a la lista de remitentes para la tarea en marcha y recibirá una respuesta una
+ vez se complete la petición original.
+ 1. El actor LinkChecker será quién maneje la petición original y coordine el proceso de extracción las URL encontradas.
+ 1. LinkChecker hará el seguimiento de todas las URL rastreadas y delegará la descarga de URL instanciando actores HttpGetter
+ y enviando el mensaje "request(url, depth)" a cada no.
+ 1. Cada actor HttpGetter recuperá el contenido de la página, extraerá las URL y manda mensajes "checkUrl(url, depth)" de
+ vuelta al LinkChecker con cada una de las URL encontradas.
+ Cada HttpGetter solo se preocupará de descargar y procesar la URL que le han pedido con "request(url, depth)" y no de cada URL que 
+ encuentre.
+ 1. Una vez todos los enlaces de la URL han sido detectados, el HttpGetter enviará un mensaje de "done" y morirá.
+ 1. Cuando el LinkChecker reciba un mensaje de "done" comprobará si todos los HttpGetter han terminado y si es así, recuperá todos los
+ enlaces encontrados y enviará un mensaje "result(url, links)" al CrawlServer y morirá.
+ 1. El LinkChecker evitará comprobar varias veces la misma URL, para no rastrear la web indefinidamente y limitaremos el rastreo al 
+ dominio de la URL original.
+ 1. Cuando el CrawlServer reciva un mensaje con el resultado responderá a los clientes enviando "crawlResponse(url, links)".
+
 ### 99. Documentación
 
  Modifica `README.md` usando [Markdown](https://guides.github.com/features/mastering-markdown/) para:
