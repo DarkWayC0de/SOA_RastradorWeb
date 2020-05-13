@@ -43,7 +43,7 @@ Para empezar:
 
 Trabaja en la rama  _develop_ de tu copia local siguiendo los pasos indicados a continuación.
 
-### 1. _Testing_ de `libactors` 
+### 1. Testing de libactors 
 
 Cualquier buen desarrollo debe ir acompañado de tests. De hecho existen metodologías como TDD y BDD donde se escriben los test antes de comenzar a programar. Por esto te proponemos que escribas tests para al menos los siguientes casos de uso de la clase `Actor`.
 
@@ -56,7 +56,7 @@ Cualquier buen desarrollo debe ir acompañado de tests. De hecho existen metodol
 
 y opcionalmente para verificar los métodos `send()`, `spawn()` y `kill()` de la clase ActorManager.
 
-Finalmente incluir la información de cobertura (_coverage_) de los tests en el archivo _README.md_.
+Finalmente incluir la información de cobertura (_coverage_) de los tests en el archivo README.md.
 Los detalles de cómo hacerlo usando GCOV están en el wiki del repositorio.
 
 ### 99. Documentación
