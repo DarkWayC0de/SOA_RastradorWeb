@@ -7,7 +7,7 @@
 
 TEST_F(TestActor, TestSenderNullptr) {
 	TestActor a;
-	ASSERT_EQ(actor.sender(), nullptr);
+	ASSERT_EQ(a.sender(), nullptr);
 }
 
 TEST_F(TestActor, TestSenderRemitente) {
