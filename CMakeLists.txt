@@ -39,7 +39,7 @@ endif ()
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(soa_1920_rastreador_web_diego_oscar
-        src/main.cpp test/testActores.cpp)
+        src/main.cpp test/test_actor.cpp)
 
 target_link_libraries(soa_1920_rastreador_web_diego_oscar gtest_main)
 
