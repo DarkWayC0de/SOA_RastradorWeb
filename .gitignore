@@ -37,6 +37,6 @@ Makefile*
 # QtCtreator CMake
 CMakeLists.txt.user*
 
-.idea/
+.idea
 build/
 bin/

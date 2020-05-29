@@ -1,8 +1,14 @@
 //
-// Created by darkwayc0de on 27/5/20.
+// Created by darkwayc0de on 29/5/20.
 //
+#include "ActorManager.h"
+#include "actor.h"
+
 
 int main(int argc, char* argv[]){
 
-  return 0;
+    Actor a;
+
+
+    return 0;
 }

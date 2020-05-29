@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(soa_1920_rastreador_web_diego_oscar)
+project(libactor)
 
+set(CMAKE_CXX_STANDARD 17)
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
@@ -37,17 +38,16 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     message("Building with llvm Code Coverage tools")
     set(CMAKE_CXX_FLAGS  "--coverage")
 endif ()
-set(CMAKE_CXX_STANDARD 17)
-set(SOURCE_FILES
-      src/main.cpp
-   )
+set(SOURCE_TEXT
+        ../src/actor.cpp
+        ../src/ActorManager.cpp
+        ../include/ActorManager.h
+        ../include/actor.h
+        )
 
-include_directories(include)
 
-# ADD Actorlib
-include_directories(lib/actor/include)
-add_subdirectory(lib/actor)
+add_executable(actor_test test_actor.cpp test_actormanager.cpp TestActor.h TestActor.cpp ${SOURCE_TEXT})
 
-add_executable(rastreadorweb ${SOURCE_FILES})
+target_link_libraries(actor_test PRIVATE gtest gtest_main)
 
-target_link_libraries(rastreadorweb PRIVATE actor)
+add_test(NAME example_test COMMAND actor_test)
