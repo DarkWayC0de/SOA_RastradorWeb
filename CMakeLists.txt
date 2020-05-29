@@ -8,13 +8,11 @@ set(SOURCE_FILES
         )
 
 include_directories(include)
-include_directories(src)
 
 # ADD Actorlib
-include_directories("lib/actor/include")
-add_subdirectory(lib/actor/)
+include_directories(lib/actor/include)
+add_subdirectory(lib/actor)
 
 add_executable(rastreadorweb ${SOURCE_FILES})
 
-target_link_libraries(rastreadorweb PRIVATE libactor)
-
+target_link_libraries(rastreadorweb actor)

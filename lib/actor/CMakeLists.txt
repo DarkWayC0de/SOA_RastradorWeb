@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(libactor)
+project(actor)
 
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_FILES
@@ -11,8 +11,7 @@ set(SOURCE_FILES
         )
 
 include_directories(include)
-include_directories(src)
 
-add_library(libactor ${SOURCE_FILES})
+add_library(actor SHARED ${SOURCE_FILES})
 
 add_subdirectory(test)
