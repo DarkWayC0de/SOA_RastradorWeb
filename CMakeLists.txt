@@ -5,7 +5,7 @@ project(soa_1920_rastreador_web_diego_oscar)
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_FILES
       src/main.cpp
-        )
+   )
 
 include_directories(include)
 
@@ -15,4 +15,5 @@ add_subdirectory(lib/actor)
 
 add_executable(rastreadorweb ${SOURCE_FILES})
 
-target_link_libraries(rastreadorweb actor)
+target_link_libraries(rastreadorweb PRIVATE actor)
+

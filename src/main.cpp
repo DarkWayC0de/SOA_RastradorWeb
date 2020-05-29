@@ -4,7 +4,10 @@
 #include "ActorManager.h"
 #include "actor.h"
 
-int main (){
+
+int main(int argc, char* argv[]){
+
+    Actor a;
 
 
     return 0;
