@@ -2,7 +2,7 @@
 // Created by darkwayc0de on 28/5/20.
 //
 
-#include "../../include/actor/actor.h"
+#include "actor.h"
 
 Actor::Actor() {}
 

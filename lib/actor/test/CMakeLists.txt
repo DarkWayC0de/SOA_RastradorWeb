@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(soa_1920_rastreador_web_diego_oscar)
+project(libactor)
 
 set(CMAKE_CXX_STANDARD 17)
 # Download and unpack googletest at configure time
@@ -39,15 +39,15 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS  "--coverage")
 endif ()
 set(SOURCE_TEXT
-        ../src/actor/actor.cpp
-        ../src/actor/ActorManager.cpp
-        ../include/actor/ActoManager.h
-        ../include/actor/actor.h
+        ../src/actor.cpp
+        ../src/ActorManager.cpp
+        ../include/ActorManager.h
+        ../include/actor.h
         )
 
 
-add_executable(soa_1920_rastreador_web_diego_oscar_test test_actor.cpp test_actormanager.cpp TestActor.h TestActor.cpp ${SOURCE_TEXT})
+add_executable(actor_test test_actor.cpp test_actormanager.cpp TestActor.h TestActor.cpp ${SOURCE_TEXT})
 
-target_link_libraries(soa_1920_rastreador_web_diego_oscar_test gtest gtest_main)
+target_link_libraries(actor_test PRIVATE gtest gtest_main)
 
-add_test(NAME example_test COMMAND soa_1920_rastreador_web_diego_oscar_test)
+add_test(NAME example_test COMMAND actor_test)

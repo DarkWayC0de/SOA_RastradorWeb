@@ -4,16 +4,17 @@ project(soa_1920_rastreador_web_diego_oscar)
 
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_FILES
-        src/main.cpp
-        src/actor/actor.cpp
-        src/actor/ActorManager.cpp
-        include/actor/ActoManager.h
-        include/actor/actor.h
+      src/main.cpp
         )
 
 include_directories(include)
 include_directories(src)
 
-add_executable(soa_1920_rastreador_web_diego_oscar ${SOURCE_FILES})
+# ADD Actorlib
+include_directories("lib/actor/include")
+add_subdirectory(lib/actor/)
 
-add_subdirectory(test)
+add_executable(rastreadorweb ${SOURCE_FILES})
+
+target_link_libraries(rastreadorweb PRIVATE libactor)
+

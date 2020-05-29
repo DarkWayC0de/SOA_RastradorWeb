@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../include/actor/ActoManager.h"
+#include "ActorManager.h"
 #include "TestActor.h"
 
 TEST(ActorManager, TestSend) {

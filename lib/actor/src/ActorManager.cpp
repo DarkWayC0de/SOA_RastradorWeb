@@ -2,7 +2,7 @@
 // Created by darkwayc0de on 28/5/20.
 //
 
-#include "actor/ActoManager.h"
+#include "ActorManager.h"
 
 ActorManager::ActorManager(){
 
