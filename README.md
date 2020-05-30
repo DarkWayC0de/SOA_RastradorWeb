@@ -1,4 +1,8 @@
-### 2. Rastreador web
+# Práctica Rastreador Web
+
+## Enunciado dado
+
+#### 2. Rastreador web
 
 El rastreador web usando el modelo de actores debe funcionar de la siguiente manera:
 
@@ -9,11 +13,12 @@ El rastreador web usando el modelo de actores debe funcionar de la siguiente man
  vez se complete la petición original.
  1. El actor LinkChecker será quién maneje la petición original y coordine el proceso de extracción las URL encontradas.
  1. LinkChecker hará el seguimiento de todas las URL rastreadas y delegará la descarga de URL instanciando actores HttpGetter
-# Rastreador web
+
+### Rastreador web
 
 A partir de las piezas que hemos desarrollado en el aula vamos a terminar de desarrollar el resto de componentes para crear un rastreador web basado en el modelo de actores.
 
-## Cómo empezar
+#### Cómo empezar
 
 Para empezar:
 
@@ -45,11 +50,11 @@ Para empezar:
     $ git pull upstream master
     ~~~~
 
-## Tareas
+#### Tareas
 
 Trabaja en la rama_develop_ de tu copia local siguiendo los pasos indicados a continuación.
 
-### 1. Testing de libactors 
+##### 1. Testing de libactors 
 
 Cualquier buen desarrollo debe ir acompañado de tests. De hecho existen metodologías como TDD y BDD donde se escriben los test antes de comenzar a programar. 
 Por esto te proponemos que escribas tests para al menos los siguientes casos de uso de la clase `Actor`.
@@ -67,7 +72,7 @@ y **opcionalmente*** verificar los métodos `send()`, `spawn()` y `kill()` de la
 Finalmente incluir la información de cobertura (_coverage_) de los tests en el archivo README.md.
 Los detalles de cómo hacerlo usando GCOV están en el wiki del repositorio.
 
-### 2. Rastreador web
+##### 2. Rastreador web
 
 El rastreador web usando el modelo de actores debe funcionar de la siguiente manera:
 
@@ -83,7 +88,7 @@ El rastreador web usando el modelo de actores debe funcionar de la siguiente man
  1. El LinkChecker evitará comprobar varias veces la misma URL, para no rastrear la web indefinidamente y limitaremos el rastreo al dominio de la URL original.
  1. Cuando el CrawlServer reciba un mensaje con el resultado responderá a los clientes enviando la URL original de la petición y la lista de enlaces.
 
-### 3. Rastreador extensible
+##### 3. Rastreador extensible
 
 El rastreador debe ser ampliable mediante un sistema de plugins:
 
@@ -103,7 +108,7 @@ Al menos harán falta 2 plugins de cada tipo:
  * Contenido de tipo "inode/directory", que en Linux corresponde a directorios.
  Este plugin generá las URL locales de cada entrada del directorio para notificarlas al LinkChecker.
 
-### 4. Servicio en red y cliente gráfico
+##### 4. Servicio en red y cliente gráfico
 
 El servicio de rastreo debe estar disponible para cualquier cliente en el sistema usando algún mecanismo de comunicación.
 Por ejemplo, objetos distribuidos.
@@ -117,7 +122,7 @@ Para probar que funciona, se debe desarrollar un sencillo cliente gráfico capaz
 **NOTA:** Se puede usar una solución diferente a Qt Remote Objects para implementar las comunicaciones, si se prefiere trabajar con C++ estándar.
 Tenemos algunos vídeos donde se explica como utilizar ZMQ para crear un protocolo muy sencillo.
 
-### 5. Implementar un mecanismo de timeout
+##### 5. Implementar un mecanismo de timeout
 
 El problema con las redes es que pueden fallar en cualquier momento.
 Los actores deben tener la posibilidad de detectar cuando un actor al que supervisan tarda demasiado en responder, porque eso podría significar que hay un problema de red.
@@ -141,7 +146,7 @@ Simplemente tendremos que añadir esta funcionalidad a la clase Actor:
  1. En cada llamada a processMessage() se deben comprobar todos los temporizadores para buscar aquellos que ya se hayan cumplido y mandar al actor el mensaje correspondiente. 
  El mensaje recibido podría incluir el identificador del temporizador, por si fuera de alguna utilidad par determinar la acción a realizar.
 
-### 6. Documentación
+##### 6. Documentación
 
  Modifica `README.md` usando [Markdown](https://guides.github.com/features/mastering-markdown/) para:
  
@@ -150,7 +155,7 @@ Simplemente tendremos que añadir esta funcionalidad a la clase Actor:
 
 No te olvides de hacer un _commit_ en _develop_ para preservar los cambios en README.md.
 
-## Para entregar la actividad
+#### Para entregar la actividad
 
 Cuando hayas terminado y estés preparado para entregar la actividad o cuando quieras _feedback_ del profesor:
 
@@ -163,7 +168,7 @@ En el título del _pull request_ intenta usar [Feedback] o [Entrega] como prefij
 Cuando todos los miembros del grupo hayan hecho sus _pull request_ de [Entrega] deberán ponerse de acuerdo para revisar los cambios propuestos, discutir mejoras o alternativas y resolver los conflictos que surjan entre las propuestas.
 Una vez estén de acuerdo en la resolución de estas cuestiones, deberán hacer el _merge_ de cada _pull request_ a `master`.
 
-## Consideraciones adicionales sobre el desarrollo
+#### Consideraciones adicionales sobre el desarrollo
 
  1. En lugar de tener una única rama _develop_ por miembro del equipo para todo el desarrollo, es mejor crear una rama local por cada tarea o característica y enviar para su revisión cada una según se van terminando. A esta práctica se la denomina [branching](https://docs.google.com/presentation/d/1EXEiEz1d__aHQvAYcPFOiwzlRMunIsDUlJ4tMMYaFig/edit?usp=sharing).
 
@@ -173,3 +178,57 @@ Una vez estén de acuerdo en la resolución de estas cuestiones, deberán hacer 
     Si te decides a usar las _issues_ y a aplicar _branching_, es buena idea nombrar las ramas incluyendo primero el número asignado a la _issue_ correspondiente: `10-feature-x`
 
  3. [Escribe comentarios adecuados](https://docs.google.com/presentation/d/1EXEiEz1d__aHQvAYcPFOiwzlRMunIsDUlJ4tMMYaFig/edit#slide=id.g351ee290dd_2_105) para cada commit.
+
+
+
+---
+## Solución
+### Requisitos para la compilación
+
+**Obligatorios:**
+* **CMake**: Lo emplearemos para la compilación del proyecto (Version 3.15 o superior).
+* **Conexión a Internet**: Necesaria para la descarga de la librería _googletest_.
+
+* **Coverage**: Nos permite comprobar el porcentaje del código de proyecto cubierto por los tests (Version gcov 
+9.3.0 o superior).
+
+### Compilación
+
+Accedemos al directorio `cmake-build-debug`"
+~~~~.sh
+$ cd cmake-build-debug
+~~~~
+Creamos el Makefile y compilamos el proyecto:
+~~~~.sh
+$ cmake ../ && make
+~~~~
+
+### Ejecución
+
+En esta carpeta encontraremos el Makefile del proyecto rastreador web y su respectivo ejecutable `rastreadorweb`. Este 
+nos permitirá ejecutar el rastreador.
+\
+\
+Ejecutar rastreador web:
+~~~~.sh
+$ ./rastreadorweb
+~~~~
+\
+Para encontrar la librería _libactor_ tendremos que entrar en el directorio `lib/actor`:
+~~~~.sh
+$ cd lib/actor
+~~~~
+Una vez aqui encontraremos el archivo `libactor.os`.\
+A su vez, encontraremos el Makefile para compilar la propia librería.\
+\
+Para encontrar los test unitarios accedemos a la carpeta test:
+~~~~.sh
+$ cd test
+~~~~
+En esta carpeta, encontraremos el Makefile para compilar los test unitarios, junto con el correspondiente ejecutable:
+"*actor_test*"
+
+Para ejecutar individualmente los test unitarios:
+~~~.sh
+$ ./actor_test
+~~~
