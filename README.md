@@ -186,47 +186,49 @@ Una vez estén de acuerdo en la resolución de estas cuestiones, deberán hacer 
 ### Requisitos para la compilación
 
 **Obligatorios:**
-* **CMake**: Lo emplearemos para la compilacion del proyecto. (Version 3.15 o superior)
-* **Conecion a Internet**: Necesaria para la descarga googletest.
+* **CMake**: Lo emplearemos para la compilación del proyecto (Version 3.15 o superior).
+* **Conexión a Internet**: Necesaria para la descarga de la librería _googletest_.
 
-* **Coverage**: Nos permite comprobar el porcentaje del proyecto tiene implentados los test y los supera. (Version gcov 
-9.3.0 o superior)
+* **Coverage**: Nos permite comprobar el porcentaje del código de proyecto cubierto por los tests (Version gcov 
+9.3.0 o superior).
 
 ### Compilación
 
-Accedemos al directorio "*cmake-build-debug*"
+Accedemos al directorio `cmake-build-debug`"
 ~~~~.sh
 $ cd cmake-build-debug
 ~~~~
-Creamos el Makefile y Compilamos el proyecto
+Creamos el Makefile y compilamos el proyecto:
 ~~~~.sh
 $ cmake ../ && make
 ~~~~
-En esta carpeta encontraemos  el Makefile del proyecto reastreador web junto a su ejecutable "*rastreadorweb*". El 
-cual nos permitira ejecutar el Rastrador web.
+
+### Ejecución
+
+En esta carpeta encontraremos el Makefile del proyecto rastreador web y su respectivo ejecutable `rastreadorweb`. Este 
+nos permitirá ejecutar el rastreador.
 \
 \
-Ejecutar Rastradorweb
+Ejecutar rastreador web:
 ~~~~.sh
 $ ./rastreadorweb
 ~~~~
 \
-Para encontrar el archivo .os de la libreria libactor
-tendremos que entrar en las carpetas lib y posteriormente actor
+Para encontrar la librería _libactor_ tendremos que entrar en el directorio `lib/actor`:
 ~~~~.sh
 $ cd lib/actor
 ~~~~
-Una vez aqui encontraremos el archivo libactor.os\
-Junto a el encontraremos el Makefile para compitar la propia libreria.\
+Una vez aqui encontraremos el archivo `libactor.os`.\
+A su vez, encontraremos el Makefile para compilar la propia librería.\
 \
-Para encontrar los test unitarios acedemos ala carpeta test.
+Para encontrar los test unitarios accedemos a la carpeta test:
 ~~~~.sh
 $ cd test
 ~~~~
-En esta carpeta encontraremos el Makefile para compilar los test unitarios, junto con el corespodiente ejecutable
+En esta carpeta, encontraremos el Makefile para compilar los test unitarios, junto con el correspondiente ejecutable:
 "*actor_test*"
 
-Ejecutar los test unitarios
+Para ejecutar individualmente los test unitarios:
 ~~~.sh
 $ ./actor_test
 ~~~
