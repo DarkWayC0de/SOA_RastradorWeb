@@ -1,8 +1,8 @@
 //
 // Created by darkwayc0de on 27/5/20.
 //
-#include "TestActor.h"
 #include "gtest/gtest.h"
+#include "TestActor.h"
 
 TEST(TestActor, TestSenderNullptr) {
 	TestActor a;

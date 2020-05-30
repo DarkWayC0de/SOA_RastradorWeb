@@ -1,6 +1,6 @@
+#include "gtest/gtest.h"
 #include "ActorManager.h"
 #include "TestActor.h"
-#include "gtest/gtest.h"
 
 TEST(ActorManager, TestSend) {
 	// Crear supervisor
