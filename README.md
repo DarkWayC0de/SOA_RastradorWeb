@@ -13,7 +13,7 @@ El rastreador web usando el modelo de actores debe funcionar de la siguiente man
  vez se complete la petición original.
  1. El actor LinkChecker será quién maneje la petición original y coordine el proceso de extracción las URL encontradas.
  1. LinkChecker hará el seguimiento de todas las URL rastreadas y delegará la descarga de URL instanciando actores HttpGetter
- ---
+
 ### Rastreador web
 
 A partir de las piezas que hemos desarrollado en el aula vamos a terminar de desarrollar el resto de componentes para crear un rastreador web basado en el modelo de actores.
@@ -217,13 +217,13 @@ tendremos que entrar en las carpetas lib y posteriormente actor
 $ cd lib/actor
 ~~~~
 Una vez aqui encontraremos el archivo libactor.os\
-Junto a el  encontraremos el Makefile para compitar lapropia libreria.\
+Junto a el encontraremos el Makefile para compitar la propia libreria.\
 \
 Para encontrar los test unitarios acedemos ala carpeta test.
 ~~~~.sh
 $ cd test
 ~~~~
-En esta carpeta encontraremos el Makefile para compilar los test unitarios junto con el corespodiente ejecutable
+En esta carpeta encontraremos el Makefile para compilar los test unitarios, junto con el corespodiente ejecutable
 "*actor_test*"
 
 Ejecutar los test unitarios
