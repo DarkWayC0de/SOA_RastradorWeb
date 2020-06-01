@@ -2,20 +2,28 @@
 // Created by darkwayc0de on 28/5/20.
 //
 
-#ifndef SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
-#define SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
+#ifndef ACTOR_H
+#define ACTOR_H
+
+#include <string>
+#include <vector>
+
+#include "mailbox.h"
 
 
 class Actor {
 private:
+	Actor* m_parent;
+	Mailbox m_mail;
+	std::vector<Actor*> m_children;
+
 public:
+    Actor(Actor* parent = nullptr);
     virtual ~Actor();
-    Actor();
-    void send();
-    void sender();
-    void getReply();
-    void getUnknown();
+
+    void send(Actor& dest, std::string message);
+	std::string* sender();
 };
 
 
-#endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
+#endif // ACTOR_H

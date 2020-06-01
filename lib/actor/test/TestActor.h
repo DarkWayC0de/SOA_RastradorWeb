@@ -2,8 +2,8 @@
 // Created by darkwayc0de on 28/5/20.
 //
 
-#ifndef SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_TESTACTOR_H
-#define SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_TESTACTOR_H
+#ifndef TESTACTOR_H
+#define TESTACTOR_H
 
 #include "actor.h"
 
@@ -12,7 +12,10 @@ public:
     TestActor();
 
     virtual ~TestActor();
+
+	std::string getReply();
+	std::string getUnknown();
 };
 
 
-#endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_TESTACTOR_H
+#endif // TESTACTOR_H

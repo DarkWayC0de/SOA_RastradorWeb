@@ -4,18 +4,10 @@
 
 #include "ActorManager.h"
 
-ActorManager::ActorManager(){
-
-}
-
 void ActorManager::spawn() {
 
 }
 
 void ActorManager::kill() {
-
-}
-
-ActorManager::~ActorManager() {
 
 }

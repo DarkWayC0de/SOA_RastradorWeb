@@ -2,6 +2,7 @@
 #include "ActorManager.h"
 #include "TestActor.h"
 
+/*
 TEST(ActorManager, TestSend) {
 	// Crear supervisor
 	ActorManager manager;
@@ -31,3 +32,4 @@ TEST(ActorManager, TestKill) {
 	manager.kill(actor);
 	EXPECT_EQ(actor, nullptr);
 }
+*/

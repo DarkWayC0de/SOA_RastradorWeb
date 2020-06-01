@@ -1,22 +1,21 @@
 //
 // Created by darkwayc0de on 28/5/20.
 //
-#ifndef SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_MANAGER_H
-#define SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_MANAGER_H
-
+#ifndef ACTORMANAGER_H
+#define ACTORMANAGER_H
 
 #include "actor.h"
 
-class ActorManager :  public Actor  {
+
+class ActorManager: public Actor {
 public:
-    ActorManager();
+    ActorManager() = default;
 
     void spawn();
     void kill();
 
-    virtual ~ActorManager();
+    ~ActorManager() = default;
 
 };
 
-
-#endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_MANAGER_H
+#endif // ACTORMANAGER_H

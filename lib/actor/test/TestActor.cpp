@@ -9,3 +9,11 @@ TestActor::TestActor() {}
 TestActor::~TestActor() {
 
 }
+
+std::string TestActor::getReply() {
+	return nullptr;
+}
+
+std::string TestActor::getUnknown() {
+	return nullptr;
+}

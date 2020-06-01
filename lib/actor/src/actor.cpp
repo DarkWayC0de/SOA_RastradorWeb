@@ -4,24 +4,24 @@
 
 #include "actor.h"
 
-Actor::Actor() {}
+Actor::Actor(Actor* parent) {
+	if (parent) {
+		m_parent = parent;
+		// parent.addChildren(this);
+	} else {
+		m_parent = nullptr;
+	}
+}
 
 Actor::~Actor() {
 
 }
 
-void Actor::send() {
+void Actor::send(Actor& dest, std::string message) {
 
 }
 
-void Actor::sender() {
-
+std::string* Actor::sender() {
+	return nullptr;
 }
 
-void Actor::getReply() {
-
-}
-
-void Actor::getUnknown() {
-
-}
