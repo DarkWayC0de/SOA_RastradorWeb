@@ -2,17 +2,17 @@
 // Created by darkwayc0de on 27/5/20.
 //
 #include "gtest/gtest.h"
-#include "TestActor.h"
+#include "test_actor.h"
 
 TEST(TestActor, TestSenderNullptr) {
 	TestActor a;
-	EXPECT_EQ(a.sender(), nullptr);
+	EXPECT_EQ(a.sender().has_value(), false);
 }
 
 TEST(TestActor, TestSenderRemitente) {
 	TestActor a, b;
 	a.send(b, "hello");
-	EXPECT_EQ(*b.sender(), "bye");
+	EXPECT_EQ(*b.sender(), "hello");
 }
 
 /*

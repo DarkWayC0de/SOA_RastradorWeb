@@ -9,12 +9,16 @@
 
 class TestActor : public Actor {
 public:
-    TestActor();
+    ~TestActor() = default;
 
-    virtual ~TestActor();
+	std::string getReply() {
+		return "";
+	};
 
-	std::string getReply();
-	std::string getUnknown();
+	std::string getUnknown() {
+		return "";
+	};
+
 };
 
 

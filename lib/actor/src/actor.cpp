@@ -18,10 +18,13 @@ Actor::~Actor() {
 }
 
 void Actor::send(Actor& dest, std::string message) {
-
+	dest.m_mail.push(message);
 }
 
-std::string* Actor::sender() {
-	return nullptr;
+std::optional<std::string> Actor::sender() {
+	if (!m_mail.empty()) {
+		return m_mail.top();
+	}
+	return {};
 }
 
