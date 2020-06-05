@@ -5,25 +5,32 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
+#include <algorithm>
 #include <optional>
 #include <stack>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "mailbox.h"
 
 class Actor {
-private:
+protected:
 	Actor* m_parent;
 	std::stack<std::string> m_mail;
 	std::vector<Actor*> m_children;
 
-public:
-    Actor(Actor* parent = nullptr);
-    virtual ~Actor();
+	void remove_child(Actor* child);
 
-    void send(Actor& dest, std::string message);
+public:
+	Actor(Actor* parent = nullptr);
+	virtual ~Actor();
+
+	void send(Actor* dest, std::string message);
 	std::optional<std::string> sender();
+
+	void kill();
+
 };
 
 

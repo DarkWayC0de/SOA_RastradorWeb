@@ -7,18 +7,22 @@
 Actor::Actor(Actor* parent) {
 	if (parent) {
 		m_parent = parent;
-		// parent.addChildren(this);
-	} else {
-		m_parent = nullptr;
+		m_parent->m_children.push_back(this);
 	}
 }
 
 Actor::~Actor() {
+	if (m_parent) {
+		m_parent->remove_child(this);
+	}
 
+	for (Actor*& child : m_children) {
+		child->kill();
+	}
 }
 
-void Actor::send(Actor& dest, std::string message) {
-	dest.m_mail.push(message);
+void Actor::send(Actor* dest, std::string message) {
+	dest->m_mail.push(message);
 }
 
 std::optional<std::string> Actor::sender() {
@@ -28,3 +32,14 @@ std::optional<std::string> Actor::sender() {
 	return {};
 }
 
+void Actor::kill() {
+	delete this;
+}
+
+void Actor::remove_child(Actor* child) {
+	m_children.erase(
+	  std::remove(m_children.begin(),
+		m_children.end(), child),
+		m_children.end()
+	);
+}
