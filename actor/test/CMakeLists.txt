@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(libactor)
+project(actor)
 
 set(CMAKE_CXX_STANDARD 17)
 # Download and unpack googletest at configure time

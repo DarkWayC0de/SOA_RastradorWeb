@@ -193,10 +193,21 @@ Una vez estén de acuerdo en la resolución de estas cuestiones, deberán hacer 
 9.3.0 o superior).
 
 ### Compilación
+#### Compilación de la libreria libactor
 
-Accedemos al directorio `cmake-build-debug`"
+Accedemos al directorio `actor/cmake-build-debug`"
 ~~~~.sh
-$ cd cmake-build-debug
+$ cd actor/cmake-build-debug
+~~~~
+Creamos el Makefile y compilamos el proyecto:
+~~~~.sh
+$ cmake ../ && make
+~~~~
+#### Compilación del proyecto indexing-service
+
+Accedemos al directorio `indexing-service/cmake-build-debug`"
+~~~~.sh
+$ cd indexing-service/cmake-build-debug
 ~~~~
 Creamos el Makefile y compilamos el proyecto:
 ~~~~.sh
@@ -204,21 +215,24 @@ $ cmake ../ && make
 ~~~~
 
 ### Ejecución
+#### Ejecución de indexing-service
 
-En esta carpeta encontraremos el Makefile del proyecto rastreador web y su respectivo ejecutable `rastreadorweb`. Este 
+En esta carpeta encontraremos el Makefile del proyecto rastreador web y su respectivo ejecutable `indexing-service`. Este
 nos permitirá ejecutar el rastreador.
 \
 \
 Ejecutar rastreador web:
 ~~~~.sh
-$ ./rastreadorweb
+$ ./indexing-service/cmake-build-debug/indexing-service
 ~~~~
 \
-Para encontrar la librería _libactor_ tendremos que entrar en el directorio `lib/actor`:
+#### Ejecución de test unitarios de libactor
+Para encontrar la librería _libactor_ tendremos que entrar en el directorio `actor/cmake-build-debug` :
 ~~~~.sh
-$ cd lib/actor
+$ cd actor/cmake-build-debug/
 ~~~~
-Una vez aqui encontraremos el archivo `libactor.os`.\
+Una vez aqui encontraremos el archivo `libactor.os`.
+Junto con el resto de sus versiones.\
 A su vez, encontraremos el Makefile para compilar la propia librería.\
 \
 Para encontrar los test unitarios accedemos a la carpeta test:
