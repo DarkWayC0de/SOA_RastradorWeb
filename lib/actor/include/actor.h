@@ -7,25 +7,31 @@
 
 #include <algorithm>
 #include <optional>
-#include <stack>
+#include <queue>
 #include <string>
 #include <thread>
+#include <utility>
 #include <vector>
 
-#include "mailbox.h"
+class Actor;
+
+typedef std::pair<Actor*, std::string> Mail;
+typedef std::queue<Mail> Mailbox;
 
 class Actor {
 protected:
 	Actor* m_parent;
-	std::stack<std::string> m_mail;
+	Mailbox m_mail;
 	std::vector<Actor*> m_children;
 
+	std::optional<Mail> get_mail();
 	void remove_child(Actor* child);
 
 public:
 	Actor(Actor* parent = nullptr);
 	virtual ~Actor();
 
+	void send(Mail mail);
 	void send(Actor* dest, std::string message);
 	std::optional<std::string> sender();
 

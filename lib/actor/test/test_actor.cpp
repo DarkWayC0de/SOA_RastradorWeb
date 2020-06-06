@@ -29,9 +29,9 @@ TEST(TestActor, TestUnknownMessage) {
 	TestActor* a = new TestActor();
 	TestActor* b = new TestActor();
 	a->send(b, "unknown");
-	EXPECT_EQ(b->getUnknown(), "unknown");
+	EXPECT_EQ(b->getReply(), "unknown");
 	a->send(b, "hello");
-	EXPECT_EQ(b->getUnknown(), "");
+	EXPECT_EQ(b->getReply(), "world");
 }
 
 TEST(TestActor, TestKill) {
@@ -50,12 +50,14 @@ TEST(TestActor, TestKill) {
 
 TEST(TestActor, TestFailed) {
 	// Crear test actor padre e hijo
-	TestActor *parent, *child(parent);
+	TestActor *parent = new TestActor();
+	TestActor *child  = new TestActor(parent);
 
 	// padre envía mensaje que el hijo no puede procesar
 	parent->send(child, "throw");
 
 	// hijo envía mensaje "failed" a mailbox del padre
 	// a través de excepciones manejadas por el hijo
-	EXPECT_EQ(parent->getReply(), "failed");
+	child->getReply();
+	EXPECT_EQ(parent->sender(), "failed");
 }

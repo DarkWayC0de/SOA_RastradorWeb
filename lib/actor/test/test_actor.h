@@ -25,29 +25,34 @@ public:
 	}
 
 	std::string getReply() {
-		try {
-			std::string reply = processMessage();
-			return reply;
-		} catch (std::exception& e) {
-			return "failed";
-		}
-	};
+		std::optional<Mail> opt_mail = get_mail();
 
-	std::string processMessage() {
-		if (m_mail.top() == "hello") {
-			return "world";
+		if (opt_mail.has_value()) {
+			try {
+				return process_mail(*opt_mail);
+			} catch (std::exception& e) {
+				send(Mail((*opt_mail).first, "failed"));
+			}
 		}
-		return getUnknown();
+
+		return "";
 	}
 
-	std::string getUnknown() {
-		if (m_mail.top() == "unknown") {
+	std::string process_mail(Mail& mail) {
+		if (mail.second == "hello") {
+			return "world";
+		}
+		return getUnknown(mail);
+	}
+
+	std::string getUnknown(Mail& mail) {
+		if (mail.second == "unknown") {
 			return "unknown";
-		} if (m_mail.top() == "throw" ) {
+		} if (mail.second == "throw") {
 			throw TestException();
 		}
 		return "";
-	};
+	}
 
 	void set_kill_flag(bool* flag) {
 		m_kill = flag;

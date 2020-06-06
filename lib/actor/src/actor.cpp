@@ -21,19 +21,33 @@ Actor::~Actor() {
 	}
 }
 
+void Actor::send(Mail mail) {
+	mail.first->m_mail.push(Mail(this, mail.second));
+}
+
 void Actor::send(Actor* dest, std::string message) {
-	dest->m_mail.push(message);
+	send(Mail(dest, message));
 }
 
 std::optional<std::string> Actor::sender() {
 	if (!m_mail.empty()) {
-		return m_mail.top();
+		Mail mail = m_mail.front();
+		return std::make_optional<std::string>(mail.second);
 	}
 	return {};
 }
 
 void Actor::kill() {
 	delete this;
+}
+
+std::optional<Mail> Actor::get_mail() {
+	if (!m_mail.empty()) {
+		Mail mail = m_mail.front();
+		m_mail.pop();
+		return std::make_optional<Mail>(mail);
+	}
+	return {};
 }
 
 void Actor::remove_child(Actor* child) {
