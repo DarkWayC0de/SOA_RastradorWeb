@@ -4,24 +4,21 @@
 
 #include "actor.h"
 
-Actor::Actor() {}
-
-Actor::~Actor() {
+Actor::Actor(Actor* parent)/*:Qobjet(parent)*/{
 
 }
 
-void Actor::send() {
-
+bool Actor::delivery_from(Actor* sender /*, const Message& message*/ ){
+    //TODO: entregar mensaje al mailbox
 }
 
-void Actor::sender() {
-
+bool Actor::send( Actor* receiver /*, const Message& message*/ ){
+    return receiver->delivery_from(this/*,message*/);
 }
 
-void Actor::getReply() {
-
-}
-
-void Actor::getUnknown() {
-
+bool Actor::reply(/*, const Message& message*/){
+    if(lastSender_){
+        return send(lastsender/*, message*/);
+    }
+    return false;
 }

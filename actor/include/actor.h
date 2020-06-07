@@ -6,17 +6,24 @@
 #define SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
 
 #include "actors_global.h"
+#include "Mailbox.h"
 
 
-class EXPORTED Actor {
+class EXPORTED Actor /*hereda de Qobjetc*/ {
 private:
+//    Mailbox<Message> mailbox_;
+//    Qthread thread_;
+    Actor* lastSender_ = nullptr;
+
+
 public:
-    virtual ~Actor();
-    Actor();
-    void send();
-    void sender();
-    void getReply();
-    void getUnknown();
+    virtual ~Actor() = default;
+    explicit Actor(Actor* parent);
+    bool delivery_from(Actor * sender /*, const Message& message*/ );
+
+protected:
+    bool send( Actor* receiver /*, const Message& message*/ );
+    bool reply(/*, const Message& message*/);
 };
 
 
