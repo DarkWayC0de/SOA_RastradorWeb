@@ -5,8 +5,10 @@
 #ifndef SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
 #define SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
 
+#include "actors_global.h"
 
-class Actor {
+
+class EXPORTED Actor {
 private:
 public:
     virtual ~Actor();

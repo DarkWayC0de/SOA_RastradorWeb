@@ -16,7 +16,8 @@ set(SOURCE_FILES
         src/ActorManager.cpp
         include/ActorManager.h
         include/actor.h
-   )
+        include/Mailbox.h
+        )
 include_directories(include)
 include_directories(src)
 

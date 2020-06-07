@@ -6,8 +6,9 @@
 
 
 #include "actor.h"
+#include "actors_global.h"
 
-class ActorManager :  public Actor  {
+class EXPORTED ActorManager :  public Actor  {
 public:
     ActorManager();
 
