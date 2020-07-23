@@ -8,8 +8,9 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include "actors_global.h"
-// TODO revisar si es not_exported o exported
+#include <actors_global.h>
+
+
 template <typename Message>
 class NOT_EXPORTED Mailbox {
 private:
@@ -28,7 +29,7 @@ public:
     }
     void push(Message&& message){
         std::lock_guard<std::mutex> lock(mutex_);
-        mailbox_.push(message);
+        mailbox_.push(std::move(message));
         noempty_.notify_one();
     }
 

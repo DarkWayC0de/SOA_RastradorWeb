@@ -13,10 +13,15 @@ set(actor_VERSION_STRING ${actor_VERSION_MAJOR}.${actor_VERSION_MINOR}.${actor_V
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_FILES
         src/actor.cpp
-        src/ActorManager.cpp
-        include/ActorManager.h
+        src/ActorThead.cpp
+        src/ActorThead.h
+        src/Delegate.cpp
+        src/Delegate.h
+       # src/ActorManager.cpp
+        #include/ActorManager.h
         include/actor.h
-        include/Mailbox.h
+        src/Mailbox.h
+        include/actors_global.h
         )
 include_directories(include)
 include_directories(src)

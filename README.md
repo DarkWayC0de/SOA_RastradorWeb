@@ -231,7 +231,7 @@ Para encontrar la librería _libactor_ tendremos que entrar en el directorio `ac
 ~~~~.sh
 $ cd actor/cmake-build-debug/
 ~~~~
-Una vez aqui encontraremos el archivo `libactor.os`.
+Una vez aqui encontraremos el archivo `libactor.so`.
 Junto con el resto de sus versiones.\
 A su vez, encontraremos el Makefile para compilar la propia librería.\
 \

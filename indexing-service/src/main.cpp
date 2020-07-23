@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[]){
 
-    Actor a;
+    Actor a(nullptr);
 
 
     return 0;

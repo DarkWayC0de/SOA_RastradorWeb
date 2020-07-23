@@ -2,23 +2,51 @@
 // Created by darkwayc0de on 28/5/20.
 //
 
-#include "actor.h"
+#include <actor.h>
+#include "ActorThead.h"
 
-Actor::Actor(Actor* parent)/*:Qobjet(parent)*/{
+Actor::Actor(Actor* parent){
+  //  Delegate<T>::Callable fn(processMessage);
+  //  handle("")
 
 }
-
-bool Actor::delivery_from(Actor* sender /*, const Message& message*/ ){
-    //TODO: entregar mensaje al mailbox
-}
-
-bool Actor::send( Actor* receiver /*, const Message& message*/ ){
-    return receiver->delivery_from(this/*,message*/);
-}
-
-bool Actor::reply(/*, const Message& message*/){
+template<typename... Types>
+bool Actor::reply(const Message& message,Types&&... args){
     if(lastSender_){
-        return send(lastsender/*, message*/);
+        return send(lastSender_ , message, std::forward<Types>(args)...);
     }
     return false;
+}
+
+bool Actor::processMessage() {
+
+
+    return true;
+}
+template<typename... Types>
+bool Actor::send(Actor* receiver, const std::string& message, Types&&... args){
+    return receiver->deliver_from(this, message, std::forward<Types>(args)...);
+}
+
+template<typename... Types>
+bool Actor::deliver_from(Actor *sender, const std::string &message, Types&&... args) {
+    mailbox_.push(std::bind(invoke_handler<Types...>, message, args...));
+    return true;
+}
+
+template<typename... Types>
+void Actor::invoke_handler(const std::string &message, Types &&... args) {
+    if (handlers_.count(message)){
+        auto delegate = handlers_.at(message);
+        delegate(std::forward<Types>(args)...);
+    } else {
+        // TODO: No exite el evento.
+        // TODO: Durante el desarrollo sería buena idea indicarlo con una
+        // TODO: advertencia en la consola.
+    }
+}
+
+template<typename... Types>
+void Actor::handle(const std::string &message, std::function<void(Types...)> fn) {
+    handlers_.emplace(message, fn);
 }
