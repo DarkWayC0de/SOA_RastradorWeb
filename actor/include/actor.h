@@ -6,22 +6,23 @@
 #define SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
 
 #include <functional>
+#include <thread>
+#include <pthread.h>
 #include "actors_global.h"
 #include "Mailbox.h"
 #include "Delegate.h"
-class ActorThead;
+//class ActorThead; //TODO SOBRA?
 
-
-class EXPORTED Actor /*hereda de Qobjetc*/ {
+class EXPORTED Actor {
 private:
     using Message = std::function<void(T)>;
     Mailbox<Message> mailbox_;
-    ActorThead* thread_;
+    std::thread thread_;
     Actor* lastSender_ = nullptr;
     std::unordered_map<std::string, Delegate> handlers_;
 
 public:
-    virtual ~Actor() = default;
+    virtual ~Actor();
     explicit Actor(Actor* parent);
     template<typename... Types>
     bool deliver_from(Actor* sender, const std::string& message, Types&&... args);
@@ -38,8 +39,8 @@ private:
     void invoke_handler(const std::string& message, Types&&... args);
     template<typename... Types>
     void handle(const std::string& message, std::function<void (Types...)> fn);
-    bool processMessage();
-    friend ActorThead;
+    void processMessage();
+    // friend ActorThead; TODO no hace falta?
 };
 
 

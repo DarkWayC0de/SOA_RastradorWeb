@@ -5,9 +5,10 @@
 #include <actor.h>
 #include "ActorThead.h"
 
-Actor::Actor(Actor* parent){
-  //  Delegate<T>::Callable fn(processMessage);
-  //  handle("")
+Actor::Actor(Actor* parent):
+                        thread_(&Actor::processMessage, this) {
+   // Delegate<int>::Callable fn(processMessage);
+    //handle("Proces_mensaje",fn);
 
 }
 template<typename... Types>
@@ -18,19 +19,22 @@ bool Actor::reply(const Message& message,Types&&... args){
     return false;
 }
 
-bool Actor::processMessage() {
+void Actor::processMessage() {
 
 
-    return true;
+
 }
 template<typename... Types>
-bool Actor::send(Actor* receiver, const std::string& message, Types&&... args){
+bool Actor::send(Actor* receiver, const std::string& message, Types&&... args) {
     return receiver->deliver_from(this, message, std::forward<Types>(args)...);
 }
 
 template<typename... Types>
 bool Actor::deliver_from(Actor *sender, const std::string &message, Types&&... args) {
-    mailbox_.push(std::bind(invoke_handler<Types...>, message, args...));
+    // mailbox_.push(std::bind(invoke_handler<Types...>, message, args...));
+    mailbox_.push([this, message, args...]() {
+        this->invoke_handler(message, args...);
+    });
     return true;
 }
 
@@ -49,4 +53,8 @@ void Actor::invoke_handler(const std::string &message, Types &&... args) {
 template<typename... Types>
 void Actor::handle(const std::string &message, std::function<void(Types...)> fn) {
     handlers_.emplace(message, fn);
+}
+
+Actor::~Actor() {
+   //TODO HAY Q MATAR EL HILO?????
 }

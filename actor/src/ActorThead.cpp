@@ -9,5 +9,5 @@ ActorThead::ActorThead(Actor *actor): actor_(actor){
 }
 
 void ActorThead::run(){
-    while(actor_->processMessage());
+   // while(actor_->processMessage());
 }
