@@ -3,12 +3,11 @@
 //
 
 #include <actor.h>
-#include "ActorThead.h"
+#include <ActorManager.h>
 
 Actor::Actor(Actor* parent):
-                        thread_(&Actor::processMessage, this) {
-   // Delegate<int>::Callable fn(processMessage);
-    //handle("Proces_mensaje",fn);
+                        thread_(&Actor::processMessage, this),
+                        parent_(parent){
 
 }
 template<typename... Types>
@@ -24,6 +23,7 @@ void Actor::processMessage() {
 
 
 }
+
 template<typename... Types>
 bool Actor::send(Actor* receiver, const std::string& message, Types&&... args) {
     return receiver->deliver_from(this, message, std::forward<Types>(args)...);
@@ -56,5 +56,9 @@ void Actor::handle(const std::string &message, std::function<void(Types...)> fn)
 }
 
 Actor::~Actor() {
-   //TODO HAY Q MATAR EL HILO?????
+   deletelater();
+}
+
+Actor *Actor::spawn() {
+    return ActorManager::instance()->spawn(this);
 }
