@@ -9,6 +9,5 @@ int main(int argc, char* argv[]){
 
     Actor a(nullptr);
 
-
     return 0;
 }
