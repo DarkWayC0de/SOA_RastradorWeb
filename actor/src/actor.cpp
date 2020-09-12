@@ -59,6 +59,4 @@ Actor::~Actor() {
    deletelater();
 }
 
-Actor *Actor::spawn() {
-    return ActorManager::instance()->spawn(this);
-}
+

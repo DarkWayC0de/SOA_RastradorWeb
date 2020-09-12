@@ -16,7 +16,8 @@ private:
 public:
     static  ActorManager* instance();
 
-    Actor* spawn(Actor* parent = nullptr);
+    template<typename ActorClass>
+    ActorClass* spawn(Actor* parent = nullptr);
 
     void kill(Actor* actor);
 
@@ -31,5 +32,10 @@ private:
 
 };
 
+template<typename ActorClass>
+ActorClass *ActorManager::spawn(Actor *parent) {
+    static_assert(std::is_base_of<Actor,ActorClass>::value);
+    return new ActorClass(parent == nullptr ? root_actor_.get() : parent);
+}
 
 #endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_MANAGER_H
