@@ -29,7 +29,7 @@ public:
 
     template<typename... Types>
     bool deliver_from(Actor* sender, const std::string& message, Types&&... args);
-    void deletelater(void);
+    void deletelater();
 
 
 protected:
@@ -45,7 +45,7 @@ protected:
     ActorClass* spawn();
 
     template<typename... Types>
-    void handle(const std::string& message, std::function<void (Types...)> fn);
+    void create_handler(const std::string& message, std::function<void (Types...)> fn);
 
 private:
     template<typename... Types>

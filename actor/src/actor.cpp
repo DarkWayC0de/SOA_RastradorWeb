@@ -49,12 +49,14 @@ void Actor::invoke_handler(const std::string &message, Types &&... args) {
 void Actor::deletelater() {}
 
 template<typename... Types>
-void Actor::handle(const std::string &message, std::function<void(Types...)> fn) {
+void Actor::create_handler(const std::string &message, std::function<void(Types...)> fn) {
     handlers_.emplace(message, fn);
 }
 
 Actor::~Actor() {
    deletelater();
 }
+
+
 
 
