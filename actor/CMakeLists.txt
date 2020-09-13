@@ -19,8 +19,8 @@ set(SOURCE_FILES
         include/ActorManager.h
         include/actor.h
         include/actors_global.h
-        include/Delegate.h
-        include/Mailbox.h
+        src/Delegate.h
+        src/Mailbox.h
         )
 include_directories(include)
 include_directories(src)
