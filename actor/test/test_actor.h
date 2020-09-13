@@ -16,47 +16,22 @@ struct TestException : public std::exception {
 
 class TestActor : public Actor {
 private:
-	bool* m_kill;
+    int int_property;
+
+    void h_update_int(int arg) {
+        int_property = arg;
+    }
+
 public:
-	TestActor(TestActor* parent = nullptr) : Actor(parent)  { }
+    TestActor(Actor* parent) : Actor(parent) {
+        std::function<void(TestActor&, int)> fn = &TestActor::h_update_int;
+        create_handler("update_int", fn);
+    }
 
-	~TestActor() {
-		*m_kill = true;
-	}
-
-	std::string getReply() {
-		std::optional<Mail> opt_mail = get_mail();
-
-		if (opt_mail.has_value()) {
-			try {
-				return process_mail(*opt_mail);
-			} catch (std::exception& e) {
-				send(Mail((*opt_mail).first, "failed"));
-			}
-		}
-
-		return "";
-	}
-
-	std::string process_mail(Mail& mail) {
-		if (mail.second == "hello") {
-			return "world";
-		}
-		return getUnknown(mail);
-	}
-
-	std::string getUnknown(Mail& mail) {
-		if (mail.second == "unknown") {
-			return "unknown";
-		} if (mail.second == "throw") {
-			throw TestException();
-		}
-		return "";
-	}
-
-	void set_kill_flag(bool* flag) {
-		m_kill = flag;
-	}
+    void* test_sender() {
+        // return sender();
+        return nullptr;
+    }
 
 };
 

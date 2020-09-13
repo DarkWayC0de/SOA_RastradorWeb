@@ -13,14 +13,14 @@ set(CMAKE_CXX_FLAGS ${CMAME_CXX_FLAGS} "-pthread")
 
 set(CMAKE_CXX_STANDARD 20)
 set(SOURCE_FILES
+        src/ActorManager.cpp
         src/actor.cpp
         src/Delegate.cpp
-        src/Delegate.h
-        src/ActorManager.cpp
         include/ActorManager.h
         include/actor.h
-        src/Mailbox.h
         include/actors_global.h
+        include/Delegate.h
+        include/Mailbox.h
         )
 include_directories(include)
 include_directories(src)

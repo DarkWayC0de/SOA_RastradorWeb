@@ -17,7 +17,7 @@
 
 class EXPORTED Actor {
 private:
-    using Message = std::function<void()>;// TODO  falta el tipo dentro parantesis void
+    using Message = std::function<void()>;// TODO falta "tipar" el argumento
     Mailbox<Message> mailbox_;
     std::thread thread_;
     Actor* parent_;
@@ -33,18 +33,24 @@ public:
 
 
 protected:
+    explicit Actor(Actor* parent);
     template <typename... Types>
-    bool send( Actor* receiver , const std::string& message,Types&&... args);
+
+    bool send(Actor* receiver , const std::string& message,Types&&... args);
     template<typename... Types>
     bool reply(const Message& message,Types&&... arg);
+
+    template<typename... Types>
+    void create_handler(const std::string& message, std::function<void (Types...)> fn) {
+        handlers_.emplace(message, fn);
+    }
+
     Actor* spawn();
 
 private:
-    explicit Actor(Actor* parent);
     template<typename... Types>
     void invoke_handler(const std::string& message, Types&&... args);
-    template<typename... Types>
-    void handle(const std::string& message, std::function<void (Types...)> fn);
+
     void processMessage();
     friend ActorManager;
 };
