@@ -40,14 +40,11 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS  "--coverage")
 endif ()
 set(SOURCE_TEXT
-        ../src/actor.cpp
-        ../src/ActorManager.cpp
-        ../include/ActorManager.h
         ../include/actor.h
         )
 
 
-add_executable(actor_test test_actor.h test_actor.cpp test_actormanager.cpp ${SOURCE_TEXT})
+add_executable(actor_test test_actor.h test_actor.cpp ${SOURCE_TEXT})
 
 target_link_libraries(actor_test PRIVATE gtest gtest_main)
 
