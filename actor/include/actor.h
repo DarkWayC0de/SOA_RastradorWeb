@@ -36,17 +36,16 @@ protected:
     explicit Actor(Actor* parent);
 
     template <typename... Types>
-    bool send(Actor* receiver , const std::string& message,Types&&... args);
+    bool send( Actor* receiver , const std::string& message,Types&&... args);
 
     template<typename... Types>
     bool reply(const Message& message,Types&&... arg);
 
-    template<typename... Types>
-    void create_handler(const std::string& message, std::function<void (Types...)> fn) {
-        handlers_.emplace(message, fn);
-    }
+    template<typename ActorClass>
+    ActorClass* spawn();
 
-    Actor* spawn();
+    template<typename... Types>
+    void handle(const std::string& message, std::function<void (Types...)> fn);
 
 private:
     template<typename... Types>
@@ -56,6 +55,9 @@ private:
     friend ActorManager;
 };
 
-
+template<typename ActorClass>
+ActorClass *Actor::spawn() {
+    return ActorManager::instance()->spawn<ActorClass>(this);
+}
 
 #endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H

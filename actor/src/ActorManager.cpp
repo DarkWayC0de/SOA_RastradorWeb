@@ -20,9 +20,6 @@ ActorManager::~ActorManager() {
     root_actor_ -> deletelater();
 }
 
-Actor *ActorManager::spawn(Actor *parent) {
-    return new Actor(parent == nullptr ? root_actor_.get() : parent);
-}
 
 template<typename... Types>
 bool ActorManager::send(Actor *receiver, const std::string &message, Types &&... args) {

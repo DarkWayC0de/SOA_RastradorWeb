@@ -2,7 +2,6 @@
 // Created by darkwayc0de on 28/5/20.
 //
 
-#include <functional>
 #include <actor.h>
 #include <ActorManager.h>
 
@@ -49,10 +48,13 @@ void Actor::invoke_handler(const std::string &message, Types &&... args) {
 
 void Actor::deletelater() {}
 
+template<typename... Types>
+void Actor::handle(const std::string &message, std::function<void(Types...)> fn) {
+    handlers_.emplace(message, fn);
+}
+
 Actor::~Actor() {
    deletelater();
 }
 
-Actor *Actor::spawn() {
-    return ActorManager::instance()->spawn(this);
-}
+
