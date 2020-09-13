@@ -9,9 +9,9 @@
 TEST(TestActor,slotIsCalledWhenMessageIsSend){
     TestActor* actorA_;
     TestActor* actorB_;
-    actorA_=ActorManager::instance()->spawn<TestActor>();
-    actorB_=ActorManager::instance()->spawn<TestActor>();
-    int arg =10;
+    actorA_ = ActorManager::instance()->spawn<TestActor>();
+    actorB_ = ActorManager::instance()->spawn<TestActor>();
+    int arg = 10;
     EXPECT_TRUE(actorA_->test_sender(actorB_,"update_int", arg));
     sleep(10);
     EXPECT_EQ(actorB_->getIntProperty(),arg);

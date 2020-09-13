@@ -39,7 +39,6 @@ public:
         return this->Actor::send(receiver,message,std::forward<Types>(args)...) ;
     }
 
-protected:
     TestActor(Actor* parent) : Actor(parent) {
         std::function<void(int)> fn = [=](int arg) {
             this->h_update_int(arg);
