@@ -5,6 +5,7 @@
 #include <memory>
 #include "gtest/gtest.h"
 #include "test_actor.h"
+#include "actor.h"
 
 TEST(TestActor,slotIsCalledWhenMessageIsSend){
     TestActor* actorA_;
