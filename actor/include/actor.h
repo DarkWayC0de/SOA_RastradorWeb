@@ -29,24 +29,27 @@ public:
 
     template<typename... Types>
     bool deliver_from(Actor* sender, const std::string& message, Types&&... args);
-    void deletelater(void);
+    void deletelater();
 
 
 protected:
+    explicit Actor(Actor* parent);
+
     template <typename... Types>
     bool send( Actor* receiver , const std::string& message,Types&&... args);
+
     template<typename... Types>
     bool reply(const Message& message,Types&&... arg);
+
     template<typename ActorClass>
     ActorClass* spawn();
 
-    explicit Actor(Actor* parent);
+    template<typename... Types>
+    void create_handler(const std::string& message, std::function<void (Types...)> fn);
 private:
 
     template<typename... Types>
     void invoke_handler(const std::string& message, Types&&... args);
-    template<typename... Types>
-    void handle(const std::string& message, std::function<void (Types...)> fn);
     void processMessage();
     friend ActorManager;
 };

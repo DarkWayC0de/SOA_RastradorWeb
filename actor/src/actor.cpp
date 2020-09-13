@@ -18,11 +18,7 @@ bool Actor::reply(const Message& message,Types&&... args){
     return false;
 }
 
-void Actor::processMessage() {
-
-
-
-}
+void Actor::processMessage() {}
 
 template<typename... Types>
 bool Actor::send(Actor* receiver, const std::string& message, Types&&... args) {
@@ -51,7 +47,7 @@ void Actor::invoke_handler(const std::string &message, Types &&... args) {
 }
 
 template<typename... Types>
-void Actor::handle(const std::string &message, std::function<void(Types...)> fn) {
+void Actor::create_handler(const std::string &message, std::function<void(Types...)> fn) {
     handlers_.emplace(message, fn);
 }
 
