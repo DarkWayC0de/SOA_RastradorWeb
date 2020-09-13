@@ -6,9 +6,22 @@
 #include "gtest/gtest.h"
 #include "test_actor.h"
 
+TEST(TestActor,slotIsCalledWhenMessageIsSend){
+    TestActor* actorA_;
+    TestActor* actorB_;
+    actorA_=ActorManager::instance()->spawn<TestActor>();
+    actorB_=ActorManager::instance()->spawn<TestActor>();
+    int arg =10;
+    EXPECT_TRUE(actorA_->test_sender(actorB_,"update_int", arg));
+    sleep(10);
+    EXPECT_EQ(actorB_->getIntProperty(),arg);
+};
+
 TEST(TestActor, TestSenderNullptr) {
+	/*
 	TestActor* a = new TestActor(nullptr);
     EXPECT_EQ(a->test_sender(), nullptr);
+    */
 }
 
 TEST(TestActor, TestSenderRemitente) {

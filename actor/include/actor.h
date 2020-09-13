@@ -34,9 +34,10 @@ public:
 
 protected:
     explicit Actor(Actor* parent);
-    template <typename... Types>
 
+    template <typename... Types>
     bool send(Actor* receiver , const std::string& message,Types&&... args);
+
     template<typename... Types>
     bool reply(const Message& message,Types&&... arg);
 
