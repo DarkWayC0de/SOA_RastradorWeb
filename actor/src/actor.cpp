@@ -18,7 +18,11 @@ bool Actor::reply(const Message& message,Types&&... args){
     return false;
 }
 
-void Actor::processMessage() {}
+bool Actor::processMessage() {
+    auto message = mailbox_.pop();
+    message();
+    return true;
+}
 
 template<typename... Types>
 bool Actor::send(Actor* receiver, const std::string& message, Types&&... args) {

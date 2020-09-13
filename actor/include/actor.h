@@ -50,7 +50,7 @@ private:
 
     template<typename... Types>
     void invoke_handler(const std::string& message, Types&&... args);
-    void processMessage();
+    bool processMessage();
     friend ActorManager;
 };
 
