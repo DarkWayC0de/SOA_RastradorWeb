@@ -80,7 +80,8 @@ private:
     template<typename... Types>
     void invoke_handler(const std::string& message, Types&&... args);
 
-    void processMessage();
+    bool processMessage();
+
     friend ActorManager;
 };
 
@@ -160,7 +161,11 @@ Actor::~Actor() {
 void Actor::deletelater() {}
 
 
-void Actor::processMessage() {}
+bool Actor::processMessage() {
+    auto message = mailbox_.pop();
+    message();
+    return true;
+}
 
 ActorManager::ActorManager(): root_actor_(new Actor(nullptr)){}
 
