@@ -141,6 +141,34 @@ void Actor::create_handler(const std::string &message, std::function<void(Types.
     handlers_.emplace(message, fn);
 }
 
+ActorManager* ActorManager::instance() {
+    if (!instance_)
+        instance_ = new ActorManager();
+
+    return instance_;
+}
+
+Actor::Actor(Actor* parent):
+        thread_(&Actor::processMessage, this),
+        parent_(parent){
+}
+
+Actor::~Actor() {
+    deletelater();
+}
+
+void Actor::deletelater() {}
 
 
+void Actor::processMessage() {}
+
+ActorManager::ActorManager(): root_actor_(new Actor(nullptr)){}
+
+void ActorManager::kill(Actor* actor) {
+
+}
+
+ActorManager::~ActorManager() {
+    root_actor_ -> deletelater();
+}
 #endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
