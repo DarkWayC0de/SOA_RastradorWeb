@@ -14,15 +14,16 @@ TEST(TestActor,slotIsCalledWhenMessageIsSend){
     actorB_ = ActorManager::instance()->spawn<TestActor>();
     int arg = 10;
     EXPECT_TRUE(actorA_->test_sender(actorB_, "update_int", arg));
-    sleep(10);
+    sleep(1);
     EXPECT_EQ(actorB_->getIntProperty(), arg);
 };
 /*
+ * TODO Sender es nulo cuando no hay mensjaes
 TEST(TestActor, TestSenderNullptr) {
 	TestActor* a = new TestActor(nullptr);
     EXPECT_EQ(a->test_sender(), nullptr);
 }
-
+    TODO El sender es correcto cuando un mensaje llega
 TEST(TestActor, TestSenderRemitente) {
 	TestActor* a = new TestActor();
 	TestActor* b = new TestActor();
@@ -31,6 +32,7 @@ TEST(TestActor, TestSenderRemitente) {
 }
 */
 TEST(TestActor, TestReply) {
+    //TODO  se puede responder a sender actors
     /*
 	TestActor* a = new TestActor();
 	TestActor* b = new TestActor();
@@ -46,6 +48,7 @@ TEST(TestActor, TestReply) {
 
 TEST(TestActor, TestUnknownMessage) {
     /*
+     * //TODO  Cuando llega un mensajedesconocido se llama al slot mensaje desconocido
 	TestActor* a = new TestActor();
 	TestActor* b = new TestActor();
 	a->send(b, "unknown");
@@ -57,7 +60,7 @@ TEST(TestActor, TestUnknownMessage) {
 }
 
 TEST(TestActor, TestKill) {
-    /*
+    /*// TODO Actor se puede matar a si mismo y actor manager puede matar un actor
 	TestActor* a = new TestActor();
 	TestActor* b = new TestActor(a);
 	/// bool a_flag = false, b_flag = false;
@@ -78,7 +81,8 @@ TEST(TestActor, TestKill) {
 }
 
 TEST(TestActor, TestFailed) {
-    /*
+    /* TODO Un actor es notificado cuando el hijo falla
+     *  cuando surge una exception
 	// Crear test actor padre e hijo
 	TestActor *parent = new TestActor();
 	TestActor *child  = new TestActor(parent);

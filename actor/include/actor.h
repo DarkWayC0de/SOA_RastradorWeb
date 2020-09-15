@@ -23,7 +23,7 @@ public:
 
     template<typename ActorClass>
     ActorClass* spawn(Actor* parent = nullptr);
-
+    //TODO Actor manager mata un actor
     void kill(Actor* actor);
 
     ~ActorManager();
@@ -34,6 +34,7 @@ public:
 
     static ActorManager* instance_;
 private:
+
     ActorManager();
 
 };
@@ -46,7 +47,7 @@ ActorClass *ActorManager::spawn(Actor *parent) {
 
 class EXPORTED Actor {
 private:
-    using Message = std::function<void()>;// TODO falta "tipar" el argumento
+    using Message = std::function<void()>;
     Mailbox<Message> mailbox_;
     std::thread thread_;
     Actor* parent_;
@@ -55,11 +56,6 @@ private:
 
 public:
     ~Actor();
-
-    template<typename... Types>
-    bool deliver_from(Actor* sender, const std::string& message, Types&&... args);
-    void deletelater();
-
 
 protected:
     explicit Actor(Actor* parent);
@@ -76,11 +72,22 @@ protected:
     template<typename... Types>
     void create_handler(const std::string& message, std::function<void (Types...)> fn);
 
+    template<typename... Types>
+    bool deliver_from(Actor* sender, const std::string& message, Types&&... args);
+
+    Actor *getLastSender() const;
+
+    /**  TODO  mata un actor
+    /* void kill(Actor* actor);
+     */
+
 private:
     template<typename... Types>
     void invoke_handler(const std::string& message, Types&&... args);
 
     bool processMessage();
+
+    void deletelater();
 
     friend ActorManager;
 };
@@ -130,9 +137,10 @@ void Actor::invoke_handler(const std::string &message, Types &&... args) {
         auto delegate = handlers_.at(message);
         delegate(std::forward<Types>(args)...);
     } else {
-        // TODO: No exite el evento.
-        // TODO: Durante el desarrollo sería buena idea indicarlo con una
-        // TODO: advertencia en la consola.
+        /**
+          TODO: No exite el evento.
+                 Durante el desarrollo sería buena idea indicarlo con una
+                 advertencia en la consola.*/
     }
 }
 
@@ -157,23 +165,33 @@ Actor::Actor(Actor* parent):
 Actor::~Actor() {
     deletelater();
 }
-
+// TODO deletelater
 void Actor::deletelater() {}
 
+/**
+  TODO  procesarmensajes desconocidos
+   Actor::unknownMenssage(const string& message)
+ */
 
 bool Actor::processMessage() {
-    auto message = mailbox_.pop();
-    message();
+    do {
+        auto message = mailbox_.pop();
+        message();
+    }while(true);
     return true;
 }
 
 ActorManager::ActorManager(): root_actor_(new Actor(nullptr)){}
-
+// TODO actor se mata
 void ActorManager::kill(Actor* actor) {
 
 }
 
 ActorManager::~ActorManager() {
     root_actor_ -> deletelater();
+}
+
+Actor* Actor::getLastSender() const {
+    return lastSender_;
 }
 #endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H

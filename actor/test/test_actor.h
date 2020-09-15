@@ -23,15 +23,12 @@ public:
         return int_property;
     }
 
-    void setIntProperty(int intProperty) {
-        int_property = intProperty;
-    }
-
 private:
 
     void h_update_int(int arg) {
         int_property = arg;
     }
+
 
 public:
     template <typename... Types>
