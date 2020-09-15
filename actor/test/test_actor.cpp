@@ -10,12 +10,14 @@
 TEST(TestActor,slotIsCalledWhenMessageIsSend){
     TestActor* actorA_;
     TestActor* actorB_;
-    actorA_ = ActorManager::instance()->spawn<TestActor>();
-    actorB_ = ActorManager::instance()->spawn<TestActor>();
+    actorA_ = ActorManager::spawn<TestActor>();
+    actorB_ = ActorManager::spawn<TestActor>();
     int arg = 10;
     EXPECT_TRUE(actorA_->test_sender(actorB_, "update_int", arg));
     sleep(1);
     EXPECT_EQ(actorB_->getIntProperty(), arg);
+    ActorManager::kill(actorA_);
+    ActorManager::kill(actorB_);
 };
 /*
  * TODO Sender es nulo cuando no hay mensjaes
@@ -48,53 +50,29 @@ TEST(TestActor, TestReply) {
 
 TEST(TestActor, TestUnknownMessage) {
     /*
+     *
      * //TODO  Cuando llega un mensajedesconocido se llama al slot mensaje desconocido
-	TestActor* a = new TestActor();
-	TestActor* b = new TestActor();
-	a->send(b, "unknown");
-	/// EXPECT_EQ(b->getReply(), "unknown");
-	a->send(b, "hello");
-	/// EXPECT_EQ(b->getReply(), "world");
-	EXPECT_EQ( b ->unknownMenssage(), {"unknown","hello"});
-    */
+     */
+
 }
 
 TEST(TestActor, TestKill) {
-    /*// TODO Actor se puede matar a si mismo y actor manager puede matar un actor
-	TestActor* a = new TestActor();
-	TestActor* b = new TestActor(a);
-	/// bool a_flag = false, b_flag = false;
-
-	/// a->set_kill_flag(&a_flag);
-	/// b->set_kill_flag(&b_flag);
-
-	/// a->kill();
-
-	/// EXPECT_EQ(a_flag, true);
-	/// EXPECT_EQ(b_flag, true);
-
-	// hasta donde entiendo kill tendría q
-	// ser private(por eso es un sucidio porque
-	// el propio actor decide morir) o como poco protected  y
-	// seria auto destrucion del propio objeto
-    */
+    TestActor* actorA_;
+    actorA_ = ActorManager::spawn<TestActor>();
+    EXPECT_TRUE(actorA_->test_sender(actorA_,"kill"));
+    sleep(1);
+    EXPECT_TRUE(actorA_->getThreadfin());
+    ActorManager::kill(actorA_);
 }
 
 TEST(TestActor, TestFailed) {
     /* TODO Un actor es notificado cuando el hijo falla
      *  cuando surge una exception
-	// Crear test actor padre e hijo
-	TestActor *parent = new TestActor();
-	TestActor *child  = new TestActor(parent);
+     */
+    TestActor* actorA_;
+    actorA_ = ActorManager::spawn<TestActor>();
+    auto child = actorA_->spawnchildActorAndFail();
+    ActorManager::kill(child);
+    ActorManager::kill(actorA_);
 
-	// padre envía mensaje que el hijo falla al procesar
-	// mediante ecepcion
-	parent->send(child, "throw");
-
-	// hijo envía mensaje "failed" a mailbox del padre
-	// a través de excepciones manejadas por el hijo
-    /// child->getReply();
-    /// EXPECT_EQ(parent->sender(), "failed");
-    EXPECT_EQ(parent->getReply(), "failed");
-    */
 }

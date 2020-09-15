@@ -9,6 +9,7 @@
 #include <thread>
 #include <pthread.h>
 #include <actors_global.h>
+#include <atomic>
 
 #include "Mailbox.h"
 #include "Delegate.h"
@@ -22,14 +23,13 @@ public:
     static  ActorManager* instance();
 
     template<typename ActorClass>
-    ActorClass* spawn(Actor* parent = nullptr);
-    //TODO Actor manager mata un actor
-    void kill(Actor* actor);
+    static ActorClass* spawn(Actor* parent = nullptr);
+    static void kill(Actor* actor);
 
     ~ActorManager();
 
     template <typename... Types>
-    bool send( Actor* receiver , const std::string& message,Types&&... args);
+    static bool send( Actor* receiver , const std::string& message,Types&&... args);
 
 
     static ActorManager* instance_;
@@ -42,7 +42,7 @@ private:
 template<typename ActorClass>
 ActorClass *ActorManager::spawn(Actor *parent) {
     static_assert(std::is_base_of<Actor,ActorClass>::value);
-    return new ActorClass(parent == nullptr ? root_actor_.get() : parent);
+    return new ActorClass(parent == nullptr ? instance_->root_actor_.get() : parent);
 }
 
 class EXPORTED Actor {
@@ -50,6 +50,7 @@ private:
     using Message = std::function<void()>;
     Mailbox<Message> mailbox_;
     std::thread thread_;
+    std::atomic_bool done_;
     Actor* parent_;
     Actor* lastSender_ = nullptr;
     std::unordered_map<std::string, Delegate> handlers_;
@@ -78,8 +79,10 @@ protected:
     Actor *getLastSender() const;
 
     /**  TODO  mata un actor
-    /* void kill(Actor* actor);
-     */
+    */
+     void kill();
+
+    void deletelater();
 
 private:
     template<typename... Types>
@@ -87,7 +90,7 @@ private:
 
     bool processMessage();
 
-    void deletelater();
+    void thread();
 
     friend ActorManager;
 };
@@ -158,12 +161,14 @@ ActorManager* ActorManager::instance() {
 }
 
 Actor::Actor(Actor* parent):
-        thread_(&Actor::processMessage, this),
-        parent_(parent){
+        thread_(&Actor::thread, this),
+        parent_(parent),
+        done_(false){
 }
 
 Actor::~Actor() {
-    deletelater();
+   // TODO hilo terminado critical ~~~~~~
+   assert((done_ == true)&& "Attempted to remove an Actor without using kill before");
 }
 // TODO deletelater
 void Actor::deletelater() {}
@@ -174,24 +179,31 @@ void Actor::deletelater() {}
  */
 
 bool Actor::processMessage() {
-    do {
         auto message = mailbox_.pop();
         message();
-    }while(true);
-    return true;
+        return !done_;
+}
+void Actor::thread(){
+    while(this->processMessage());
+    this->deletelater();
 }
 
 ActorManager::ActorManager(): root_actor_(new Actor(nullptr)){}
 // TODO actor se mata
 void ActorManager::kill(Actor* actor) {
-
+    actor->kill();
 }
 
 ActorManager::~ActorManager() {
-    root_actor_ -> deletelater();
+    kill(root_actor_.get());
 }
 
 Actor* Actor::getLastSender() const {
     return lastSender_;
 }
+
+void Actor::kill() {
+    done_ = true;
+}
+
 #endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H

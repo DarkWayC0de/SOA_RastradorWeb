@@ -17,16 +17,31 @@ struct TestException : public std::exception {
 
 class TestActor : public Actor {
 private:
-    int int_property;
+    int int_property_;
+    bool threadfin_ = false;
 public:
+    bool getThreadfin() const {
+        return threadfin_;
+    }
+
     int getIntProperty() const {
-        return int_property;
+        return int_property_;
+    }
+    TestActor* spawnchildActorAndFail(){
+     //TODO spawnchildactorandfail
     }
 
 private:
 
     void h_update_int(int arg) {
-        int_property = arg;
+        int_property_ = arg;
+    }
+    void kill(){
+        this->Actor::kill();
+    }
+   void deletelater(){
+        this->Actor::deletelater();
+        threadfin_= true;
     }
 
 
