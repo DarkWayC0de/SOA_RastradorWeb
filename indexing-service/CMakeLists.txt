@@ -5,10 +5,11 @@ project(indexing-service)
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_FILES
         include/CrawServer.h
-        include/linkChecker.h
-        src/linkChecker.cpp
+        include/LinkChecker.h
+        include/HttpGetter.h
+        src/LinkChecker.cpp
         src/CrawServer.cpp
-        src/main.cpp
+        src/HttpGetter.cpp
         src/main.cpp
    )
 

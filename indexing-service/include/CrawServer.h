@@ -14,6 +14,7 @@ public:
 
 private:
     void crawlRequest(const std::string url, int depth);
+    void result(const std::string& url, std::list<std::string>& listaUrl);
 
 };
 
