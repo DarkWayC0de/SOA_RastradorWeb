@@ -2,6 +2,7 @@
 // Created by darkwayc0de on 27/5/20.
 //
 
+#include <iostream>
 #include <memory>
 #include "gtest/gtest.h"
 #include "test_actor.h"
@@ -11,10 +12,11 @@ TEST(TestActor,slotIsCalledWhenMessageIsSend){
     TestActor* actorA_;
     TestActor* actorB_;
     actorA_ = ActorManager::instance()->spawn<TestActor>();
-    actorB_ = ActorManager::spawn<TestActor>();
+    actorB_ = ActorManager::instance()->spawn<TestActor>();
     int arg = 10;
     EXPECT_TRUE(actorA_->test_sender(actorB_, "update_int", arg));
     sleep(1);
+    std::cout << "[+] Reached checkpoint #1.\n";
     EXPECT_EQ(actorB_->getIntProperty(), arg);
     ActorManager::kill(actorA_);
     ActorManager::kill(actorB_);

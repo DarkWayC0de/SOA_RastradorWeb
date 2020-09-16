@@ -5,6 +5,7 @@
 #ifndef TESTACTOR_H
 #define TESTACTOR_H
 
+#include <iostream>
 #include <exception>
 #include <functional>
 #include "actor.h"
@@ -36,8 +37,8 @@ private:
 
 public:
     template <typename... Types>
-    bool test_sender(Actor* receiver , const std::string& message,Types&&... args) {
-        return this->Actor::send(receiver,message,std::forward<Types>(args)...) ;
+    bool test_sender(Actor* receiver, const std::string& message,Types&&... args) {
+        return this->send(receiver, message, std::forward<Types>(args)...) ;
     }
 
     TestActor(Actor* parent) : Actor(parent) {
