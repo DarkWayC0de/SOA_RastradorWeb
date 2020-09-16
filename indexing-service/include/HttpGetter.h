@@ -8,7 +8,10 @@
 #include <actor.h>
 
 class HttpGetter : public Actor {
+public:
     explicit HttpGetter(Actor* parent);
+private:
+    void request(const std::string& url,int depth);
 };
 
 
