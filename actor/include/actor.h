@@ -16,11 +16,18 @@
 
 class Actor;
 
-class EXPORTED ActorManager  {
+//////////////////
+// ACTORMANAGER //
+//////////////////
+
+class EXPORTED ActorManager {
 private:
     std::unique_ptr<Actor>  root_actor_;
+    ActorManager();
+
 public:
-    static  ActorManager* instance();
+    static ActorManager* instance_;
+    static ActorManager* instance();
 
     template<typename ActorClass>
     static ActorClass* spawn(Actor* parent = nullptr);
@@ -28,16 +35,12 @@ public:
 
     ~ActorManager();
 
-    template <typename... Types>
-    static bool send( Actor* receiver , const std::string& message,Types&&... args);
-
-
-    static ActorManager* instance_;
-private:
-
-    ActorManager();
+    template<typename... Types>
+    static bool send(Actor* receiver , const std::string& message,Types&&... args);
 
 };
+
+ActorManager* ActorManager::instance_ = nullptr;
 
 template<typename ActorClass>
 ActorClass *ActorManager::spawn(Actor *parent) {
@@ -45,24 +48,48 @@ ActorClass *ActorManager::spawn(Actor *parent) {
     return new ActorClass(parent == nullptr ? instance_->root_actor_.get() : parent);
 }
 
+ActorManager::~ActorManager() {
+    kill(root_actor_.get());
+}
+
+ActorManager* ActorManager::instance() {
+    if (!instance_) {
+        instance_ = new ActorManager();
+    }
+
+    return instance_;
+}
+
+///////////
+// ACTOR //
+///////////
+
 class EXPORTED Actor {
 private:
     using Message = std::function<void()>;
     Mailbox<Message> mailbox_;
-    std::thread thread_;
-    std::atomic_bool done_;
     Actor* parent_;
     Actor* lastSender_ = nullptr;
+
+    std::thread thread_;
     std::unordered_map<std::string, Delegate> handlers_;
 
-public:
-    ~Actor();
+    std::atomic_bool done_;
+
+    template<typename... Types>
+    void invoke_handler(const std::string& message, Types&&... args);
+
+    bool processMessage();
+
+    void thread();
+
+    friend ActorManager;
 
 protected:
     explicit Actor(Actor* parent);
 
     template <typename... Types>
-    bool send( Actor* receiver , const std::string& message,Types&&... args);
+    bool send(Actor* receiver , const std::string& message,Types&&... args);
 
     template<typename... Types>
     bool reply(const Message& message,Types&&... arg);
@@ -76,49 +103,30 @@ protected:
     template<typename... Types>
     bool deliver_from(Actor* sender, const std::string& message, Types&&... args);
 
-    Actor *getLastSender() const;
+    Actor* getLastSender() const;
 
-    /**  TODO  mata un actor
-    */
-     void kill();
-
+    // TODO - Mata a un actor
+    void kill();
     void deletelater();
 
-private:
-    template<typename... Types>
-    void invoke_handler(const std::string& message, Types&&... args);
+public:
+    ~Actor();
 
-    bool processMessage();
-
-    void thread();
-
-    friend ActorManager;
 };
 
 template<typename ActorClass>
-ActorClass *Actor::spawn() {
+ActorClass* Actor::spawn() {
     return ActorManager::instance()->spawn<ActorClass>(this);
-}
-
-ActorManager* ActorManager::instance_ = nullptr;
-
-
-
-template<typename... Types>
-bool ActorManager::send(Actor *receiver, const std::string &message, Types &&... args) {
-    return receiver -> deliver_from(nullptr, message, std::forward<Types>(args)...);
 }
 
 
 template<typename... Types>
 bool Actor::reply(const Message& message,Types&&... args){
-    if(lastSender_){
+    if(lastSender_) {
         return send(lastSender_ , message, std::forward<Types>(args)...);
     }
     return false;
 }
-
-
 
 template<typename... Types>
 bool Actor::send(Actor* receiver, const std::string& message, Types&&... args) {
@@ -136,7 +144,7 @@ bool Actor::deliver_from(Actor *sender, const std::string &message, Types&&... a
 
 template<typename... Types>
 void Actor::invoke_handler(const std::string &message, Types &&... args) {
-    if (handlers_.count(message)){
+    if (handlers_.count(message)) {
         auto delegate = handlers_.at(message);
         delegate(std::forward<Types>(args)...);
     } else {
@@ -147,28 +155,20 @@ void Actor::invoke_handler(const std::string &message, Types &&... args) {
     }
 }
 
-
 template<typename... Types>
 void Actor::create_handler(const std::string &message, std::function<void(Types...)> fn) {
     handlers_.emplace(message, fn);
 }
 
-ActorManager* ActorManager::instance() {
-    if (!instance_)
-        instance_ = new ActorManager();
-
-    return instance_;
-}
-
 Actor::Actor(Actor* parent):
         thread_(&Actor::thread, this),
         parent_(parent),
-        done_(false){
+        done_(false) {
 }
 
 Actor::~Actor() {
    // TODO hilo terminado critical ~~~~~~
-   assert((done_ == true)&& "Attempted to remove an Actor without using kill before");
+   assert((done_ == true) && "Attempted to remove an Actor without using kill before");
 }
 // TODO deletelater
 void Actor::deletelater() {}
@@ -183,19 +183,9 @@ bool Actor::processMessage() {
         message();
         return !done_;
 }
-void Actor::thread(){
+void Actor::thread() {
     while(this->processMessage());
     this->deletelater();
-}
-
-ActorManager::ActorManager(): root_actor_(new Actor(nullptr)){}
-// TODO actor se mata
-void ActorManager::kill(Actor* actor) {
-    actor->kill();
-}
-
-ActorManager::~ActorManager() {
-    kill(root_actor_.get());
 }
 
 Actor* Actor::getLastSender() const {
@@ -204,6 +194,21 @@ Actor* Actor::getLastSender() const {
 
 void Actor::kill() {
     done_ = true;
+}
+
+/*
+ * Métodos de ActorManager dependientes de Actor implementado
+ */
+ActorManager::ActorManager(): root_actor_(new Actor(nullptr)){}
+
+// TODO actor se mata
+void ActorManager::kill(Actor* actor) {
+    actor->kill();
+}
+
+template<typename... Types>
+bool ActorManager::send(Actor *receiver, const std::string &message, Types &&... args) {
+    return receiver -> deliver_from(nullptr, message, std::forward<Types>(args)...);
 }
 
 #endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
