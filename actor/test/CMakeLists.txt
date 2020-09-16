@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(actor)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_BUILD_TYPE debug)
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)

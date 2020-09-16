@@ -10,6 +10,7 @@
 #include <pthread.h>
 #include <actors_global.h>
 #include <atomic>
+#include <stop_token>
 
 #include "Mailbox.h"
 #include "Delegate.h"
@@ -32,6 +33,7 @@ public:
     template<typename ActorClass>
     static ActorClass* spawn(Actor* parent = nullptr);
     static void kill(Actor* actor);
+    static bool threadlive(Actor* actor);
 
     ~ActorManager();
 
@@ -75,6 +77,7 @@ private:
     std::unordered_map<std::string, Delegate> handlers_;
 
     std::atomic_bool done_;
+    std::stop_sourse stopt_;
 
     template<typename... Types>
     void invoke_handler(const std::string& message, Types&&... args);
@@ -151,7 +154,8 @@ void Actor::invoke_handler(const std::string &message, Types &&... args) {
         /**
           TODO: No exite el evento.
                  Durante el desarrollo sería buena idea indicarlo con una
-                 advertencia en la consola.*/
+                 advertencia en la consola.
+        */
     }
 }
 
@@ -167,8 +171,10 @@ Actor::Actor(Actor* parent):
 }
 
 Actor::~Actor() {
-   // TODO hilo terminado critical ~~~~~~
-   assert((done_ == true) && "Attempted to remove an Actor without using kill before");
+   if(!thread_.joinable()) {
+       std::cerr << "Attempted to remove an Actor without using kill before";
+   }
+
 }
 // TODO deletelater
 void Actor::deletelater() {}
@@ -179,7 +185,7 @@ void Actor::deletelater() {}
  */
 
 bool Actor::processMessage() {
-        auto message = mailbox_.pop();
+        auto message = mailbox_.pop(stopt_);
         message();
         return !done_;
 }
@@ -201,14 +207,21 @@ void Actor::kill() {
  */
 ActorManager::ActorManager(): root_actor_(new Actor(nullptr)){}
 
-// TODO actor se mata
 void ActorManager::kill(Actor* actor) {
     actor->kill();
+    actor->stopt_.stop_requested();
+    actor->thread_.join();
 }
 
 template<typename... Types>
 bool ActorManager::send(Actor *receiver, const std::string &message, Types &&... args) {
     return receiver -> deliver_from(nullptr, message, std::forward<Types>(args)...);
 }
+bool ActorManager::threadlive(Actor* actor){
+    return actor->thread_.joinable();
+}
+
+
+
 
 #endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H

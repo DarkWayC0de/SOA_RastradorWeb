@@ -6,7 +6,10 @@
 #define ACTOR_MAILBOX_H
 
 #include <queue>
+
 #include <mutex>
+#include <thread>
+#include <stop_token>
 #include <condition_variable>
 #include <actors_global.h>
 
@@ -33,11 +36,11 @@ public:
         noempty_.notify_one();
     }
 
-    Message pop(){
+    Message pop(std::stop_token& stopT){
         std::unique_lock<std::mutex> lock(mutex_);
-        while(mailbox_.empty()){
-            noempty_.wait(lock);
-        }
+            noempty_.wait(lock, stopT,[this]{
+                return !mailbox_.emply();
+            });
         auto message = std::move(mailbox_.front());
         mailbox_.pop();
         return  message;
@@ -45,7 +48,7 @@ public:
 
     void clear(){
         std::lock_guard<std::mutex> lock(mutex_);
-        mailbox_.swap( queue());
+        mailbox_.swap(queue());
     }
 
     bool empty(){

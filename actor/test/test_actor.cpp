@@ -10,7 +10,7 @@
 TEST(TestActor,slotIsCalledWhenMessageIsSend){
     TestActor* actorA_;
     TestActor* actorB_;
-    actorA_ = ActorManager::spawn<TestActor>();
+    actorA_ = ActorManager::instance()->spawn<TestActor>();
     actorB_ = ActorManager::spawn<TestActor>();
     int arg = 10;
     EXPECT_TRUE(actorA_->test_sender(actorB_, "update_int", arg));
@@ -58,10 +58,10 @@ TEST(TestActor, TestUnknownMessage) {
 
 TEST(TestActor, TestKill) {
     TestActor* actorA_;
-    actorA_ = ActorManager::spawn<TestActor>();
+    actorA_ = ActorManager::instance()->spawn<TestActor>();
     EXPECT_TRUE(actorA_->test_sender(actorA_,"kill"));
     sleep(1);
-    EXPECT_TRUE(actorA_->getThreadfin());
+    EXPECT_TRUE(ActorManager::threadlive(actorA_) == false );
     ActorManager::kill(actorA_);
 }
 
@@ -70,7 +70,7 @@ TEST(TestActor, TestFailed) {
      *  cuando surge una exception
      */
     TestActor* actorA_;
-    actorA_ = ActorManager::spawn<TestActor>();
+    actorA_ = ActorManager::instance()->spawn<TestActor>();
     auto child = actorA_->spawnchildActorAndFail();
     ActorManager::kill(child);
     ActorManager::kill(actorA_);
