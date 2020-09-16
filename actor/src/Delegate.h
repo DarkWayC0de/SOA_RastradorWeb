@@ -30,5 +30,4 @@ void Delegate::operator()(Types &&... args) {
 
 
 
-
 #endif //ACTOR_DELEGATE_H

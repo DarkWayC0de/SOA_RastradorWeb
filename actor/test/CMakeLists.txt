@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(actor)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_BUILD_TYPE debug)
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -40,14 +40,11 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS  "--coverage")
 endif ()
 set(SOURCE_TEXT
-        ../src/actor.cpp
-        ../src/ActorManager.cpp
-        ../include/ActorManager.h
         ../include/actor.h
         )
 
 
-add_executable(actor_test test_actor.h test_actor.cpp test_actormanager.cpp ${SOURCE_TEXT})
+add_executable(actor_test test_actor.h test_actor.cpp ${SOURCE_TEXT})
 
 target_link_libraries(actor_test PRIVATE gtest gtest_main)
 

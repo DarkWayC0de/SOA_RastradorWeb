@@ -13,13 +13,10 @@ set(CMAKE_CXX_FLAGS ${CMAME_CXX_FLAGS} "-pthread")
 
 set(CMAKE_CXX_STANDARD 20)
 set(SOURCE_FILES
-        src/actor.cpp
-        src/Delegate.h
-        src/ActorManager.cpp
-        include/ActorManager.h
         include/actor.h
-        src/Mailbox.h
         include/actors_global.h
+        src/Delegate.h
+        src/Mailbox.h
         )
 include_directories(include)
 include_directories(src)
@@ -28,8 +25,9 @@ add_library(actor SHARED ${SOURCE_FILES})
 target_link_libraries(actor ${CMAKE_THREAD_LIBS_INIT})
 target_include_directories(actor PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 set_target_properties(actor PROPERTIES PUBLIC_HEADER include/)
+set_target_properties(actor PROPERTIES PRIVATE src/)
 set_target_properties(actor  PROPERTIES VERSION ${actor_VERSION_STRING} SOVERSION ${actor_VERSION_MAJOR})
-
+SET_TARGET_PROPERTIES(actor PROPERTIES LINKER_LANGUAGE CXX)
 
 
 add_subdirectory(test)

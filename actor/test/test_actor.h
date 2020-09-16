@@ -5,7 +5,9 @@
 #ifndef TESTACTOR_H
 #define TESTACTOR_H
 
+#include <iostream>
 #include <exception>
+#include <functional>
 #include "actor.h"
 
 struct TestException : public std::exception {
@@ -16,49 +18,37 @@ struct TestException : public std::exception {
 
 class TestActor : public Actor {
 private:
-	bool* m_kill;
+    int int_property_;
 public:
-	TestActor(TestActor* parent = nullptr) : Actor(parent)  { }
 
-	~TestActor() {
-		*m_kill = true;
-	}
+    int getIntProperty() const {
+        return int_property_;
+    }
+    TestActor* spawnchildActorAndFail(){
+     //TODO spawnchildactorandfail
+    }
 
-	std::string getReply() {
-		std::optional<Mail> opt_mail = get_mail();
+private:
 
-		if (opt_mail.has_value()) {
-			try {
-				return process_mail(*opt_mail);
-			} catch (std::exception& e) {
-				send(Mail((*opt_mail).first, "failed"));
-			}
-		}
+    void h_update_int(int arg) {
+        int_property_ = arg;
+    }
 
-		return "";
-	}
 
-	std::string process_mail(Mail& mail) {
-		if (mail.second == "hello") {
-			return "world";
-		}
-		return getUnknown(mail);
-	}
+public:
+    template <typename... Types>
+    bool test_sender(Actor* receiver, const std::string& message,Types&&... args) {
+        return this->send(receiver, message, std::forward<Types>(args)...) ;
+    }
 
-	std::string getUnknown(Mail& mail) {
-		if (mail.second == "unknown") {
-			return "unknown";
-		} if (mail.second == "throw") {
-			throw TestException();
-		}
-		return "";
-	}
+    TestActor(Actor* parent) : Actor(parent) {
+        std::function<void(int)> fn = [this](int arg) {
+            this->h_update_int(arg);
+        };
+        this->Actor::create_handler("update_int", fn);
+    }
 
-	void set_kill_flag(bool* flag) {
-		m_kill = flag;
-	}
-
-};
+    };
 
 
 #endif // TESTACTOR_H

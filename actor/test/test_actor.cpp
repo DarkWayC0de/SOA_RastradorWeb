@@ -2,25 +2,42 @@
 // Created by darkwayc0de on 27/5/20.
 //
 
+#include <iostream>
 #include <memory>
 #include "gtest/gtest.h"
 #include "test_actor.h"
+#include "actor.h"
 
+TEST(TestActor,slotIsCalledWhenMessageIsSend){
+    TestActor* actorA_;
+    TestActor* actorB_;
+    actorA_ = ActorManager::instance()->spawn<TestActor>();
+    actorB_ = ActorManager::instance()->spawn<TestActor>();
+    int arg = 10;
+    EXPECT_TRUE(actorA_->test_sender(actorB_, "update_int", arg));
+    sleep(1);
+    std::cout << "[+] Reached checkpoint #1.\n";
+    EXPECT_EQ(actorB_->getIntProperty(), arg);
+    ActorManager::kill(actorA_);
+    ActorManager::kill(actorB_);
+};
+/*
+ * TODO Sender es nulo cuando no hay mensjaes
 TEST(TestActor, TestSenderNullptr) {
-	TestActor* a = new TestActor();
-	/// EXPECT_EQ(a->sender().has_value(), false);
-     EXPECT_EQ(a->sender(), nullptr);
+	TestActor* a = new TestActor(nullptr);
+    EXPECT_EQ(a->test_sender(), nullptr);
 }
-
+    TODO El sender es correcto cuando un mensaje llega
 TEST(TestActor, TestSenderRemitente) {
 	TestActor* a = new TestActor();
 	TestActor* b = new TestActor();
 	a->send(b, "hello");
-	/// EXPECT_EQ(b->sender(), "hello");
-	EXPECT_EQ(  &(b->sender()), &a );
+	EXPECT_EQ(b->test_sender(), "hello");
 }
-
+*/
 TEST(TestActor, TestReply) {
+    //TODO  se puede responder a sender actors
+    /*
 	TestActor* a = new TestActor();
 	TestActor* b = new TestActor();
 	a->send(b, "hello");
@@ -30,50 +47,34 @@ TEST(TestActor, TestReply) {
 	b->Reply(str1);
 	str2 = a->getReply();
 	EXPECT_EQ(str1,str2);
+    */
 }
 
 TEST(TestActor, TestUnknownMessage) {
-	TestActor* a = new TestActor();
-	TestActor* b = new TestActor();
-	a->send(b, "unknown");
-	/// EXPECT_EQ(b->getReply(), "unknown");
-	a->send(b, "hello");
-	/// EXPECT_EQ(b->getReply(), "world");
-	EXPECT_EQ( b ->unknownMenssage(), {"unknown","hello"});
+    /*
+     *
+     * //TODO  Cuando llega un mensajedesconocido se llama al slot mensaje desconocido
+     */
+
 }
 
 TEST(TestActor, TestKill) {
-	TestActor* a = new TestActor();
-	TestActor* b = new TestActor(a);
-	/// bool a_flag = false, b_flag = false;
-
-	/// a->set_kill_flag(&a_flag);
-	/// b->set_kill_flag(&b_flag);
-
-	/// a->kill();
-
-	/// EXPECT_EQ(a_flag, true);
-	/// EXPECT_EQ(b_flag, true);
-
-	// hasta donde entiendo kill tendría q
-	// ser private(por eso es un sucidio porque
-	// el propio actor decide morir) o como poco protected  y
-	// seria auto destrucion del propio objeto
-
+    TestActor* actorA_;
+    actorA_ = ActorManager::instance()->spawn<TestActor>();
+    EXPECT_TRUE(actorA_->test_sender(actorA_,"kill"));
+    sleep(1);
+    EXPECT_TRUE(ActorManager::threadlive(actorA_) == false );
+    ActorManager::kill(actorA_);
 }
 
 TEST(TestActor, TestFailed) {
-	// Crear test actor padre e hijo
-	TestActor *parent = new TestActor();
-	TestActor *child  = new TestActor(parent);
+    /* TODO Un actor es notificado cuando el hijo falla
+     *  cuando surge una exception
+     */
+    TestActor* actorA_;
+    actorA_ = ActorManager::instance()->spawn<TestActor>();
+    auto child = actorA_->spawnchildActorAndFail();
+    ActorManager::kill(child);
+    ActorManager::kill(actorA_);
 
-	// padre envía mensaje que el hijo falla al procesar
-	// mediante ecepcion
-	parent->send(child, "throw");
-
-	// hijo envía mensaje "failed" a mailbox del padre
-	// a través de excepciones manejadas por el hijo
-    /// child->getReply();
-    /// EXPECT_EQ(parent->sender(), "failed");
-    EXPECT_EQ(parent->getReply(), "failed");
 }
