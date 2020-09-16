@@ -4,11 +4,8 @@ project(indexing-service)
 
 set(CMAKE_CXX_STANDARD 20)
 set(SOURCE_FILES
-        include/CrawServer.h
-        include/LinkChecker.h
-        include/HttpGetter.h
         src/LinkChecker.cpp
-        src/CrawServer.cpp
+        src/CrawlServer.cpp
         src/HttpGetter.cpp
         src/main.cpp
    )
@@ -16,13 +13,5 @@ set(SOURCE_FILES
 include_directories(include)
 
 #ADD libactor
-include_directories(../actor/include)
-add_library(actor SHARED IMPORTED GLOBAL)
-set_target_properties(actor PROPERTIES IMPORTED_LOCATION
-        "${PROJECT_SOURCE_DIR}/../actor/cmake-build-debug/libactor.so")
-
-
 add_executable(indexing-service ${SOURCE_FILES})
-
-
 target_link_libraries(indexing-service actor)
