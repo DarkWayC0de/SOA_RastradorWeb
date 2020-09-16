@@ -10,7 +10,6 @@
 #include <pthread.h>
 #include <actors_global.h>
 #include <atomic>
-#include <stop_token>
 
 #include "Mailbox.h"
 #include "Delegate.h"
@@ -77,7 +76,6 @@ private:
     std::unordered_map<std::string, Delegate> handlers_;
 
     std::atomic_bool done_;
-    std::stop_sourse stopt_;
 
     template<typename... Types>
     void invoke_handler(const std::string& message, Types&&... args);
@@ -108,7 +106,6 @@ protected:
 
     Actor* getLastSender() const;
 
-    // TODO - Mata a un actor
     void kill();
     void deletelater();
 
@@ -185,8 +182,10 @@ void Actor::deletelater() {}
  */
 
 bool Actor::processMessage() {
-        auto message = mailbox_.pop(stopt_);
-        message();
+        auto message = mailbox_.pop(std::chrono::milliseconds(100));
+        if(message){
+           std::invoke(message.value());
+        }
         return !done_;
 }
 void Actor::thread() {
@@ -209,7 +208,6 @@ ActorManager::ActorManager(): root_actor_(new Actor(nullptr)){}
 
 void ActorManager::kill(Actor* actor) {
     actor->kill();
-    actor->stopt_.stop_requested();
     actor->thread_.join();
 }
 

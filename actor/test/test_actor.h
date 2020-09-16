@@ -42,7 +42,7 @@ public:
     }
 
     TestActor(Actor* parent) : Actor(parent) {
-        std::function<void(int)> fn = [=](int arg) {
+        std::function<void(int)> fn = [this](int arg) {
             this->h_update_int(arg);
         };
         this->Actor::create_handler("update_int", fn);

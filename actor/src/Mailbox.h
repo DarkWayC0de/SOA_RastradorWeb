@@ -9,7 +9,6 @@
 
 #include <mutex>
 #include <thread>
-#include <stop_token>
 #include <condition_variable>
 #include <actors_global.h>
 
@@ -36,14 +35,18 @@ public:
         noempty_.notify_one();
     }
 
-    Message pop(std::stop_token& stopT){
+    std::optional<Message> pop(const std::chrono::milliseconds& rel_time){
+
         std::unique_lock<std::mutex> lock(mutex_);
-            noempty_.wait(lock, stopT,[this]{
-                return !mailbox_.emply();
-            });
-        auto message = std::move(mailbox_.front());
-        mailbox_.pop();
-        return  message;
+           bool noemptty = noempty_.wait_for(lock, rel_time,[this]{
+                     return !mailbox_.empty();
+                });
+           if(noemptty){
+                auto message = std::move(mailbox_.front());
+                mailbox_.pop();
+                return  message;
+           }
+        return {};
     }
 
     void clear(){
