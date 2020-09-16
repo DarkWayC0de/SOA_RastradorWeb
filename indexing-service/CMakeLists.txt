@@ -4,7 +4,12 @@ project(indexing-service)
 
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_FILES
-      src/main.cpp
+        include/CrawServer.h
+        include/linkChecker.h
+        src/linkChecker.cpp
+        src/CrawServer.cpp
+        src/main.cpp
+        src/main.cpp
    )
 
 include_directories(include)
