@@ -26,6 +26,7 @@ include_directories(src)
 
 add_library(actor SHARED ${SOURCE_FILES})
 target_link_libraries(actor ${CMAKE_THREAD_LIBS_INIT})
+target_include_directories(actor PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 set_target_properties(actor PROPERTIES PUBLIC_HEADER include/)
 set_target_properties(actor  PROPERTIES VERSION ${actor_VERSION_STRING} SOVERSION ${actor_VERSION_MAJOR})
 

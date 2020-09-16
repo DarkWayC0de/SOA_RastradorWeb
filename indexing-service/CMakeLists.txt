@@ -25,4 +25,4 @@ set_target_properties(actor PROPERTIES IMPORTED_LOCATION
 add_executable(indexing-service ${SOURCE_FILES})
 
 
-target_link_libraries(indexing-service PRIVATE actor)
+target_link_libraries(indexing-service actor)
