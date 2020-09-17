@@ -7,10 +7,17 @@
 #include "CrawlServer.h"
 
 CrawServer::CrawServer(Actor *parent) : Actor(parent) {
-
+    std::function<void(const std::string&, int)> fn2 = [this](const std::string& url, int depth) {
+        this->crawlRequest(url,depth);
+    };
+    this->Actor::create_handler("crawlRequest", fn2);
+    std::function<void(const std::string& , std::vector<std::string>&)> fn1 = [this](const std::string& url, std::vector<std::string>& listaUrl) {
+        this->result(url,listaUrl);
+    };
+    this->Actor::create_handler("result", fn1);
 }
 
-void CrawServer::crawlRequest(const std::string url, int depth) {
+void CrawServer::crawlRequest(const std::string& url, int depth) {
     auto i = urlclient_.begin();
      for( ; i != urlclient_.end(); i++){
          if(i->first == url){
@@ -33,7 +40,7 @@ void CrawServer::crawlRequest(const std::string url, int depth) {
     // En caso contrario crear linkcheker  y pedirle que procese la url.
 }
 
-void CrawServer::result(const std::string& url, std::list<std::string>& listaUrl) {
+void CrawServer::result(const std::string& url, std::vector<std::string>& listaUrl) {
     auto i = urlclient_.begin();
     for( ; i != urlclient_.end(); i++){
         if(i->first == url){
@@ -45,7 +52,7 @@ void CrawServer::result(const std::string& url, std::list<std::string>& listaUrl
     for( ; elem != pair->second.end(); elem++){
        // send(elem.base(),"result",url,listaUrl);
     }
-   // urlclient_.re
+   // urlclient_.remove
     //TODO Responder a cada cliente pendiente de peticion con la lista de enlaces
     //Message CrawlRespons(url,links)
 

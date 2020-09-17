@@ -14,8 +14,8 @@ public:
     explicit CrawServer(Actor *parent);
 
 private:
-    void crawlRequest(const std::string url, int depth);
-    void result(const std::string& url, std::list<std::string>& listaUrl);
+    void crawlRequest(const std::string& url, int depth);
+    void result(const std::string& url, std::vector<std::string>& listaUrl);
     std::vector<std::pair<std::string,std::vector<Actor*>>> urlclient_;
     std::vector<LinkChecker*> Linchekers_;
 };

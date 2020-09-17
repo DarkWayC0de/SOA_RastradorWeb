@@ -22,7 +22,7 @@ LinkChecker::LinkChecker(Actor *actor) : Actor(actor), dones_(0) {
 
 void LinkChecker::request(const std::string &url, int depth) {
     // TODO: Crear un HttpGetter y pedirle que procesese la url
-    auto getter = ActorManager::spawn<HttpGetter>();
+    auto getter = ActorManager::spawn<HttpGetter>(this);
     httpgeters_.push_back(getter);
     urls_.push_back(url);
     ActorManager::send(getter,"request",url,depth);
@@ -33,7 +33,7 @@ void LinkChecker::checkUrl(const std::string &url, int depth) {
     if(it == urls_.end()){
             urls_.push_back(url);
             if(--depth != 0){
-                auto getter = ActorManager::instance()->spawn<HttpGetter>();
+                auto getter = ActorManager::instance()->spawn<HttpGetter>(this);
                 httpgeters_.push_back(getter);
                 ActorManager::send(getter,"request",url,depth);
             }
