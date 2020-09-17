@@ -7,7 +7,7 @@ set(SOURCE_FILES
         src/LinkChecker.cpp
         src/CrawlServer.cpp
         src/HttpGetter.cpp
-        src/Curlflecher.cpp
+        src/CurlFetcher.cpp
         src/main.cpp
    )
 

@@ -2,24 +2,23 @@
 // Created by darkwayc0de on 16/9/20.
 //
 
-#include "Curlflecher.h"
+#include "CurlFetcher.h"
 
-std::atomic_int Curlflecher::instanceCounter_ = 0;
 
-Curlflecher::Curlflecher(){
+CurlFetcher::CurlFetcher(){
     if(instanceCounnter_.fetch_add(1,std::memory_order_acquire) == 0){
         curl_global_init(CURL_GLOBAL_ALL);
     }
 }
 
-Curlflecher::~Curlflecher() {
+CurlFetcher::~CurlFetcher() {
     if(instanceCounnter_.fetch_sub(1, std::memory_order_acquire) == 1){
         curl_global_cleanup();
     }
 
 }
 
-void Curlflecher::fetchURL(const std::string& url) {
+void CurlFetcher::fetchURL(const std::string& url) {
     CURL* curl_handle = curl_easy_init();
     curl_easy_setopt(curl_handle, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 1L);
@@ -42,6 +41,6 @@ void Curlflecher::fetchURL(const std::string& url) {
 
 }
 
-size_t Curlflecher::curlWriteCallback(char *ptr, size_t size, size_t nmemb, void *userdata) {
-    auto fetcher = reinterpret_cast<Curlflecher*>(userdata);
+size_t CurlFetcher::curlWriteCallback(char *ptr, size_t size, size_t nmemb, void *userdata) {
+    auto fetcher = reinterpret_cast<CurlFetcher*>(userdata);
 }
