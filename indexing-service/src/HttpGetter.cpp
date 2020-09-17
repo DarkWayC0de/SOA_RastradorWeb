@@ -12,7 +12,7 @@ HttpGetter::HttpGetter(Actor *parent) : Actor(parent) {
 
 void HttpGetter::request(const std::string &url, int depth){
     //TODO: Descargar la URL y buscar URLs.
-    CurlFetcher fetcher;
-    fetcher.fetchURL(url);
+  //  CurlFetcher fetcher;
+//    fetcher.fetchURL(url);
 }
 

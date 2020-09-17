@@ -9,7 +9,6 @@
 #include "actor.h"
 
 TEST(TestActor,slotIsCalledWhenMessageIsSend){
-    /*
     TestActor* actorA_;
     TestActor* actorB_;
     actorA_ = ActorManager::instance()->spawn<TestActor>();
@@ -21,8 +20,8 @@ TEST(TestActor,slotIsCalledWhenMessageIsSend){
     EXPECT_EQ(actorB_->getIntProperty(), arg);
     ActorManager::kill(actorA_);
     ActorManager::kill(actorB_);
-    */
 };
+
 /*
  * TODO Sender es nulo cuando no hay mensjaes
 TEST(TestActor, TestSenderNullptr) {

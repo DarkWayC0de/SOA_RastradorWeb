@@ -10,6 +10,7 @@ set(SOURCE_FILES
         src/CurlFetcher.cpp
         src/main.cpp
    )
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
 
 include_directories(include)
 
@@ -20,6 +21,7 @@ pkg_check_modules(YOUR_PKG REQUIRED IMPORTED_TARGET libcurl)
 #ADD libactor
 include_directories(../actor/include)
 add_library(actor SHARED IMPORTED GLOBAL)
+target_link_libraries(actor ${CMAKE_THREAD_LIBS_INIT})
 set_target_properties(actor PROPERTIES IMPORTED_LOCATION
         "${PROJECT_SOURCE_DIR}/../actor/cmake-build-debug/libactor.so")
 
