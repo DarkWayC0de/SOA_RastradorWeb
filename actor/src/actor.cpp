@@ -10,6 +10,6 @@ void ActorManager::kill(Actor* actor) {
 }
 
 bool ActorManager::threadlive(Actor* actor){
-    return actor->thread_.joinable();
+    return !actor->done_;
 }
 
