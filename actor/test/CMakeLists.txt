@@ -39,10 +39,9 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     message("Building with llvm Code Coverage tools")
     set(CMAKE_CXX_FLAGS  "--coverage")
 endif ()
-set(SOURCE_TEXT
-        ../include/actor.h
-        )
 
+set(SOURCE_TEXT ../src/actor.cpp)
+include_directories(../include)
 
 add_executable(actor_test test_actor.h test_actor.cpp ${SOURCE_TEXT})
 
