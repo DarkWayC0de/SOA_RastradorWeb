@@ -53,3 +53,9 @@ void LinkChecker::done() {
 
 }
 
+void LinkChecker::deletelater() {
+    for (int i = 0; i < httpgeters_.size() ; ++i) {
+        ActorManager::kill(httpgeters_[i]);
+    }
+}
+

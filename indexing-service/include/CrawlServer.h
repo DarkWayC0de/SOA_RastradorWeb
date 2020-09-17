@@ -18,6 +18,7 @@ private:
     void result(const std::string& url, std::vector<std::string>& listaUrl);
     std::vector<std::pair<std::string,std::vector<Actor*>>> urlclient_;
     std::vector<LinkChecker*> Linchekers_;
+    void deletelater();
 };
 
 

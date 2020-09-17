@@ -48,12 +48,18 @@ void CrawServer::result(const std::string& url, std::vector<std::string>& listaU
         }
     }
     auto pair = i.base();
-    auto elem = pair->second.begin();
-    for( ; elem != pair->second.end(); elem++){
-       // send(elem.base(),"result",url,listaUrl);
+    auto elem = 0;
+    for( ; elem < pair->second.size(); elem++){
+        send(pair->second[elem],"result",url,listaUrl);
     }
-   // urlclient_.remove
+    urlclient_.erase(i);
     //TODO Responder a cada cliente pendiente de peticion con la lista de enlaces
     //Message CrawlRespons(url,links)
 
+}
+
+void CrawServer::deletelater() {
+    for (int i = 0; i <Linchekers_.size() ; ++i) {
+        ActorManager::kill(Linchekers_[i]);
+    }
 }

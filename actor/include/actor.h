@@ -130,7 +130,7 @@ protected:
         this->done_ =true;
     }
 
-    void deletelater() {} // TODO le
+    virtual void deletelater(){} // TODO le
 
     Actor* parent_;
     Delegate* unknown_msg_handler_;

@@ -17,6 +17,7 @@ private:
     std::vector<HttpGetter*> httpgeters_;
     unsigned long dones_;
     std::vector<std::string> urls_;
+    void deletelater();
 };
 
 
