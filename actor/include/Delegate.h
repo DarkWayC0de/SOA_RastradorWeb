@@ -10,24 +10,21 @@
 #include <unordered_map>
 #include <iostream>
 #include <any>
-class Delegate{
+
+class Delegate {
 public:
     template <typename... Types>
-    Delegate(std::function<void (Types...)> handler);
+    Delegate(std::function<void (Types...)> handler): handler_(handler) {}
 
     template<typename... Types>
-    void operator()(Types&&... args);
+    void operator()(Types&&... args) {
+        auto cast = std::any_cast<std::function<void(Types...)>>(handler_);
+        std::invoke(cast, std::forward<Types>(args)...);
+    }
+
 private:
     std::any handler_;
+
 };
-template<typename... Types>
-Delegate::Delegate(std::function<void(Types...)> handler):handler_(handler) {}
-
-template<typename... Types>
-void Delegate::operator()(Types &&... args) {
-    std::invoke(std::any_cast<std::function<void (Types...)>>(handler_), std::forward<Types>(args)...);
-}
-
-
 
 #endif //ACTOR_DELEGATE_H
