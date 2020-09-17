@@ -104,7 +104,7 @@ protected:
     bool send(Actor* receiver , const std::string& message,Types&&... args);
 
     template<typename... Types>
-    bool reply(const Message& message,Types&&... arg);
+    bool reply(const std::string& message,Types&&... arg);
 
     template<typename ActorClass>
     ActorClass* spawn();
@@ -141,7 +141,7 @@ ActorClass* Actor::spawn() {
 
 
 template<typename... Types>
-bool Actor::reply(const Message& message,Types&&... args){
+bool Actor::reply(const std::string& message,Types&&... args){
     if(lastSender_) {
         return send(lastSender_ , message, std::forward<Types>(args)...);
     }
