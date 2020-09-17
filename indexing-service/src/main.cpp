@@ -21,7 +21,8 @@ int main(int argc, char* argv[]){
    // ActorManager::send(linkchec,"request","http://www.ull.es/",2); //FALLA
 
     auto getter = ActorManager::instance()->spawn<HttpGetter>();
-    ActorManager::send(getter,"request","http://www.ull.es/",2); //FALLA
+   // ActorManager::send(getter,"request","http://www.ull.es/",2); //FALLA
+    //getter->request("http://www.ull.es/",2);
     while(true){
 
     }

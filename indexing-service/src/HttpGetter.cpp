@@ -17,10 +17,9 @@ HttpGetter::HttpGetter(Actor *parent) : Actor(parent) {
 
 void HttpGetter::request(const std::string& url, int depth){
     //TODO: Descargar la URL y buscar URLs.
-    std::cout<<"lotenemos";
     CurlFetcher fetcher;
     auto info = fetcher.fetchURL(url,10240L);
-    if(info || info.value().contentType.find("text/html",0) == std::string::npos){
+    if(!info.has_value()|| info.value().contentType.find("text/html",0) == std::string::npos){
         reply("done");
         kill();
         return;
@@ -34,14 +33,14 @@ void HttpGetter::request(const std::string& url, int depth){
       auto hrefAttribute = node.attribute("href");
       auto srcAttribute = node.attribute("src");
       if(! hrefAttribute.empty()){
-          if (hrefAttribute.starts_with("http")) {
+          if (hrefAttribute.starts_with("http:" )|| hrefAttribute.starts_with("https:")) {
               reply("checkUrl", hrefAttribute, depth);
           }else{
               reply("checkUrl", url + hrefAttribute, depth);
           }
       }
       if(! srcAttribute.empty()){
-          if (hrefAttribute.starts_with("http")) {
+          if (hrefAttribute.starts_with("http:")||hrefAttribute.starts_with("https:")) {
               reply("checkUrl", srcAttribute, depth);
           }else{
               reply("checkUrl", url + srcAttribute, depth);
