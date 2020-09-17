@@ -11,6 +11,7 @@
 #include <thread>
 #include <condition_variable>
 #include <actors_global.h>
+#include <iostream>
 
 
 template <typename Message>

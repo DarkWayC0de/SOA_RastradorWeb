@@ -6,6 +6,7 @@
 #define INDEXING_SERVICE_CRAWSERVER_H
 
 #include <actor.h>
+#include <LinkChecker.h>
 
 
 class CrawServer : public Actor {
@@ -15,7 +16,8 @@ public:
 private:
     void crawlRequest(const std::string url, int depth);
     void result(const std::string& url, std::list<std::string>& listaUrl);
-
+    std::vector<std::pair<std::string,std::vector<Actor*>>> urlclient_;
+    std::vector<LinkChecker*> Linchekers_;
 };
 
 
