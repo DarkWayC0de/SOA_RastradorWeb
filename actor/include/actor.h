@@ -63,7 +63,6 @@ class EXPORTED Actor {
 private:
     using Message = std::function<void()>;
     Mailbox<Message> mailbox_;
-    Actor* parent_;
     Actor* lastSender_ = nullptr;
 
     std::thread thread_;
@@ -82,10 +81,13 @@ private:
         return !done_;
     }
 
-/**
-  TODO  procesarmensajes desconocidos
-   Actor::unknownMenssage(const string& message)
- */
+    template<typename... Types>
+    void unknownMessage(const std::string& message, Types&&... args) {
+        // if there is a function to handle unknown messages { launch function }
+        if (unknown_msg_handler_) {
+            (*unknown_msg_handler_)();
+        }
+    }
 
     void thread() {
         while(this->processMessage());
@@ -125,17 +127,20 @@ protected:
     }
 
     void kill() {
-        std::cout<<"holapayasoaoodoadoadoaodoadoaodoaodaodoaodoaodso\n";
         this->done_ =true;
     }
 
     void deletelater() {} // TODO
 
+    Actor* parent_;
+    Delegate* unknown_msg_handler_;
+
 public:
     ~Actor() {
-       if(!thread_.joinable()) {
+        delete unknown_msg_handler_;
+        if(!thread_.joinable()) {
            std::cerr << "Attempted to remove an Actor without using kill before";
-       }
+        }
     }
 
 };
@@ -162,7 +167,6 @@ bool Actor::send(Actor* receiver, const std::string& message, Types&&... args) {
 template<typename... Types>
 bool Actor::deliver_from(Actor *sender, const std::string &message, Types&&... args) {
     lastSender_ = sender;
-    std::cout<<"holadahdla\n";
     mailbox_.push([this, message, ...args = std::forward<Types&&>(args)] {
         this->invoke_handler(message, std::forward<decltype(args)>(args)...);
     });
@@ -175,11 +179,8 @@ void Actor::invoke_handler(const std::string &message, Types&&... args) {
         auto delegate = handlers_.at(message);
         delegate(std::forward<Types&&>(args)...);
     } else {
-        /**
-          TODO: No exite el evento.
-                 Durante el desarrollo sería buena idea indicarlo con una
-                 advertencia en la consola.
-        */
+        // Mensaje desconocido
+        unknownMessage(message, std::forward<Types&&>(args)...);
     }
 }
 

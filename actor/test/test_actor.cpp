@@ -51,28 +51,26 @@ TEST(TestActor, TestUnknownMessage) {
      *
      * //TODO  Cuando llega un mensajedesconocido se llama al slot mensaje desconocido
      */
-
+    auto a = ActorManager::instance()->spawn<TestActor>();
+    auto b = ActorManager::instance()->spawn<TestActor>();
+    a->test_sender(b, "unknown_msg", 30);
+    sleep(1);
+    EXPECT_EQ(b->getUnknownProperty(), true);
 }
 
 TEST(TestActor, TestKill) {
-/*
     TestActor* actorA_;
     actorA_ = ActorManager::instance()->spawn<TestActor>();
     EXPECT_TRUE(actorA_->test_sender(actorA_,"kill"));
-    sleep(10);
+    sleep(1);
     EXPECT_TRUE((ActorManager::threadlive(actorA_) == false) );
-    */
 }
 
 TEST(TestActor, TestFailed) {
     /* TODO Un actor es notificado cuando el hijo falla
      *  cuando surge una exception
      */
-    /*
-    TestActor* actorA_;
-    actorA_ = ActorManager::instance()->spawn<TestActor>();
-    auto child = actorA_->spawnchildActorAndFail();
-    ActorManager::kill(child);
-    ActorManager::kill(actorA_);
-    */
+    auto parent = ActorManager::instance()->spawn<TestActor>();
+    auto child = parent->spawnchildActorAndFail();
+    EXPECT_EQ(parent->getChildFailure(), true);
 }
