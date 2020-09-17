@@ -98,7 +98,12 @@ protected:
     explicit Actor(Actor* parent) :
         thread_(&Actor::thread, this),
         parent_(parent),
-        done_(false) {}
+        done_(false) {
+        std::function<void()> fn = [this]() {
+            this->kill();
+        };
+        this->Actor::create_handler("kill", fn);
+    }
 
     template <typename... Types>
     bool send(Actor* receiver, const std::string& message,Types&&... args);
@@ -120,7 +125,8 @@ protected:
     }
 
     void kill() {
-        done_ = true;
+        std::cout<<"holapayasoaoodoadoadoaodoadoaodoaodaodoaodoaodso\n";
+        this->done_ =true;
     }
 
     void deletelater() {} // TODO
