@@ -162,7 +162,7 @@ bool Actor::send(Actor* receiver, const std::string& message, Types&&... args) {
 template<typename... Types>
 bool Actor::deliver_from(Actor *sender, const std::string &message, Types&&... args) {
     lastSender_ = sender;
-    std::cout<<"holadahdla\n";
+    std::cout<<message<<"hola\n";
     mailbox_.push([this, message, ...args = std::forward<Types&&>(args)] {
         this->invoke_handler(message, std::forward<decltype(args)>(args)...);
     });
