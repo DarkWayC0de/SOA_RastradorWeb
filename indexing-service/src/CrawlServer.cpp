@@ -20,7 +20,7 @@ void CrawServer::crawlRequest(const std::string url, int depth) {
      if(i != urlclient_.end()){
          i ->second.push_back(getLastSender());
      }else{
-         auto linch =  ActorManager::spawn<LinkChecker>();
+         auto linch =  ActorManager::spawn<LinkChecker>(this);
          Linchekers_.push_back(linch);
          std::pair<std::string,std::vector<Actor*>> pair;
          pair.first = url;

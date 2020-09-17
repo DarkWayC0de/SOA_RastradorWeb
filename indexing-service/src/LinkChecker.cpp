@@ -6,7 +6,18 @@
 #include <algorithm>
 
 LinkChecker::LinkChecker(Actor *actor) : Actor(actor), dones_(0) {
-
+    std::function<void(const std::string&,int)> fn = [this](const std::string &url, int depth) {
+        this->request(url,depth);
+    };
+    this->Actor::create_handler("request", fn);
+    std::function<void(const std::string&,int)> fn1 = [this](const std::string &url, int depth) {
+        this->checkUrl(url,depth);
+    };
+    this->Actor::create_handler("checkUrl", fn1);
+    std::function<void()> fn2 = [this]() {
+        this->done();
+    };
+    this->Actor::create_handler("done", fn2);
 }
 
 void LinkChecker::request(const std::string &url, int depth) {

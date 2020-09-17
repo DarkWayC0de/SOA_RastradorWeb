@@ -9,7 +9,7 @@
 #include "CurlFetcher.h"
 
 HttpGetter::HttpGetter(Actor *parent) : Actor(parent) {
-    std::function<void(std::string,int)> fn = [this](std::string url, int depth) {
+    std::function<void(const std::string&,int)> fn = [this](const std::string& url, int depth) {
         this->request(url,depth);
     };
     this->Actor::create_handler("request", fn);
@@ -29,7 +29,7 @@ void HttpGetter::request(const std::string& url, int depth){
     CDocument doc;
     doc.parse(content);
     CSelection elements = doc.find("[href],[src]");
-    for (int i = 0; i = elements.nodeNum(); ++i) {
+    for (int i = 0; i != elements.nodeNum(); ++i) {
       auto node =  elements.nodeAt(i);
       auto hrefAttribute = node.attribute("href");
       auto srcAttribute = node.attribute("src");
