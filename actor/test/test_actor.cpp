@@ -9,7 +9,7 @@
 #include "actor.h"
 
 TEST(TestActor,slotIsCalledWhenMessageIsSend){
-    /*
+
     TestActor* actorA_;
     TestActor* actorB_;
     actorA_ = ActorManager::instance()->spawn<TestActor>();
@@ -20,7 +20,7 @@ TEST(TestActor,slotIsCalledWhenMessageIsSend){
     EXPECT_EQ(actorB_->getIntProperty(), arg);
     ActorManager::kill(actorA_);
     ActorManager::kill(actorB_);
-    */
+
 };
 
 /*
@@ -28,28 +28,22 @@ TEST(TestActor,slotIsCalledWhenMessageIsSend){
 TEST(TestActor, TestSenderNullptr) {
 	TestActor* a = new TestActor(nullptr);
     EXPECT_EQ(a->test_sender(), nullptr);
-}
-    TODO El sender es correcto cuando un mensaje llega
+}*/
 TEST(TestActor, TestSenderRemitente) {
-	TestActor* a = new TestActor();
-	TestActor* b = new TestActor();
-	a->send(b, "hello");
-	EXPECT_EQ(b->test_sender(), "hello");
+	auto a = ActorManager::instance()->spawn<TestActor>();
+	auto b = ActorManager::instance()->spawn<TestActor>();
+	a->test_sender(b,"senderiscorrect");
+	sleep(1);
+	EXPECT_EQ(b->getSender(), a);
 }
-*/
+
 TEST(TestActor, TestReply) {
     //TODO  se puede responder a sender actors
-    /*
-	TestActor* a = new TestActor();
-	TestActor* b = new TestActor();
-	a->send(b, "hello");
-	/// EXPECT_EQ(b->getReply(), "world");
-	std::string  str1 = "que tal";
-	std::string  str2;
-	b->Reply(str1);
-	str2 = a->getReply();
-	EXPECT_EQ(str1,str2);
-    */
+    auto a = ActorManager::instance()->spawn<TestActor>();
+    auto b = ActorManager::instance()->spawn<TestActor>();
+    a->test_sender(b,"replygetIntProperrty",30);
+    sleep(1);
+    EXPECT_EQ(a->getIntProperty(), 30);
 }
 
 TEST(TestActor, TestUnknownMessage) {
