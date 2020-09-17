@@ -98,10 +98,15 @@ protected:
     explicit Actor(Actor* parent) :
         thread_(&Actor::thread, this),
         parent_(parent),
-        done_(false) {}
+        done_(false) {
+        std::function<void()> fn = [this]() {
+            this->kill();
+        };
+        this->Actor::create_handler("kill", fn);
+    }
 
     template <typename... Types>
-    bool send(Actor* receiver , const std::string& message,Types&&... args);
+    bool send(Actor* receiver, const std::string& message,Types&&... args);
 
     template<typename... Types>
     bool reply(const std::string& message,Types&&... arg);
@@ -120,7 +125,8 @@ protected:
     }
 
     void kill() {
-        done_ = true;
+        std::cout<<"holapayasoaoodoadoadoaodoadoaodoaodaodoaodoaodso\n";
+        this->done_ =true;
     }
 
     void deletelater() {} // TODO
@@ -143,30 +149,31 @@ ActorClass* Actor::spawn() {
 template<typename... Types>
 bool Actor::reply(const std::string& message,Types&&... args){
     if(lastSender_) {
-        return send(lastSender_ , message, std::forward<Types>(args)...);
+        return send(lastSender_ , message, std::forward<Types&&>(args)...);
     }
     return false;
 }
 
 template<typename... Types>
 bool Actor::send(Actor* receiver, const std::string& message, Types&&... args) {
-    return receiver->deliver_from(this, message, std::forward<Types>(args)...);
+    return receiver->deliver_from(this, message, std::forward<Types&&>(args)...);
 }
 
 template<typename... Types>
 bool Actor::deliver_from(Actor *sender, const std::string &message, Types&&... args) {
-    // mailbox_.push(std::bind(invoke_handler<Types...>, message, args...));
-    mailbox_.push([this, message, args...]() {
-        this->invoke_handler(message, args...);
+    lastSender_ = sender;
+    std::cout<<"holadahdla\n";
+    mailbox_.push([this, message, ...args = std::forward<Types&&>(args)] {
+        this->invoke_handler(message, std::forward<decltype(args)>(args)...);
     });
     return true;
 }
 
 template<typename... Types>
-void Actor::invoke_handler(const std::string &message, Types &&... args) {
+void Actor::invoke_handler(const std::string &message, Types&&... args) {
     if (handlers_.count(message)) {
         auto delegate = handlers_.at(message);
-        delegate(std::forward<Types>(args)...);
+        delegate(std::forward<Types&&>(args)...);
     } else {
         /**
           TODO: No exite el evento.
@@ -187,8 +194,8 @@ void Actor::create_handler(const std::string &message, std::function<void(Types.
  */
 
 template<typename... Types>
-bool ActorManager::send(Actor *receiver, const std::string &message, Types &&... args) {
-    return receiver -> deliver_from(nullptr, message, std::forward<Types>(args)...);
+bool ActorManager::send(Actor *receiver, const std::string &message, Types&&... args) {
+    return receiver->deliver_from(nullptr, message, std::forward<Types&&>(args)...);
 }
 
 #endif //SOA_1920_RASTREADOR_WEB_DIEGO_OSCAR_ACTOR_H
