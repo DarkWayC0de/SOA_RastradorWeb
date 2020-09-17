@@ -25,5 +25,12 @@ target_link_libraries(actor ${CMAKE_THREAD_LIBS_INIT})
 set_target_properties(actor PROPERTIES IMPORTED_LOCATION
         "${PROJECT_SOURCE_DIR}/../actor/cmake-build-debug/libactor.so")
 
+#ADD libgq
+#include_directories(../libs/gumbo-querry/src/)
+#add_library(libgq STATIC IMPORTED)
+#target_link_libraries(libgq -lgq)
+#set_target_properties(libgq PROPERTIES IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/gumbo-querry/lib/libqg.a")
+#set_target_properties(libgq PROPERTIES IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/../libs/gumbo-querry/lib/libqg.so")
+
 add_executable(indexing-service ${SOURCE_FILES})
-target_link_libraries(indexing-service PRIVATE actor PUBLIC PkgConfig::YOUR_PKG)
+target_link_libraries(indexing-service  PRIVATE actor libgq PUBLIC PkgConfig::YOUR_PKG)

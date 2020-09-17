@@ -3,10 +3,15 @@
 //
 #include <iostream>
 #include "CurlFetcher.h"
+#include "Document.h"
+#include "Node.h"
 
 int main(int argc, char* argv[]){
-    CurlFetcher fetcher;
-    auto  info = fetcher.fetchURL("https://i.pinimg.com/originals/60/c2/17/60c2177448cbf90408ed1df7da78cf00.jpg",10240L);
-    std::cout <<info->content.size()<<"\n";
+    std::string page("<h1><a>some link</a></h1>");
+    CDocument doc;
+    doc.parse(page.c_str());
+
+    CSelection c = doc.find("h1 a");
+    std::cout << c.nodeAt(0).text() << std::endl; // some link
     return 0;
 }

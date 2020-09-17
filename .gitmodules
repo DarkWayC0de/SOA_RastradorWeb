@@ -1,0 +1,3 @@
+[submodule "libs/gumbo-querry"]
+	path = libs/gumbo-querry
+	url = https://github.com/lazytiger/gumbo-query
