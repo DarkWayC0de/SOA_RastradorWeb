@@ -5,7 +5,7 @@
 #include "LinkChecker.h"
 #include <algorithm>
 
-LinkChecker::LinkChecker(Actor *actor) : Actor(actor),dones_(0) {
+LinkChecker::LinkChecker(Actor *actor) : Actor(actor), dones_(0) {
 
 }
 
@@ -26,7 +26,7 @@ void LinkChecker::checkUrl(const std::string &url, int depth) {
                 httpgeters_.push_back(getter);
                 ActorManager::send(getter,"request",url,depth);
             }
-        }
+
     }
     //TODO: Comprobar si la url ha sido procesada, afirmativo ingnoramos,
     // neg crear httpgeter que procese la url con depth -1

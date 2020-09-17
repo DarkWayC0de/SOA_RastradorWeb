@@ -8,6 +8,7 @@
 #include "HttpGetter.h"
 
 class LinkChecker : public Actor {
+public:
     explicit  LinkChecker(Actor* actor);
 private:
     void request(const std::string& url, int depth );

@@ -43,7 +43,7 @@ void CrawServer::result(const std::string& url, std::list<std::string>& listaUrl
     auto pair = i.base();
     auto elem = pair->second.begin();
     for( ; elem != pair->second.end(); elem++){
-        send(elem.base(),"result",url,listaUrl);
+       // send(elem.base(),"result",url,listaUrl);
     }
    // urlclient_.re
     //TODO Responder a cada cliente pendiente de peticion con la lista de enlaces
